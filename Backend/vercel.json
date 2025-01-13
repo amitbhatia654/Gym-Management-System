@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/index.js"
+    }
+  ],
+  "env": {
+    "frontendUrl": "https://mern-dashboard-orpin.vercel.app",
+    "MongoDb_URI": "mongodb+srv://testuser:test1234@cluster0.7ofij.mongodb.net/newdb",
+    "secretKey":"t54f2vn2mi5w7qe4zp5s4asd412"
+  }
+}

@@ -1,0 +1,108 @@
+.sidenav-small {
+    width: 55px;
+}
+
+.sidenav-full {
+    min-width: 190px;
+
+}
+
+:root {
+    --box-color: #E7E7EE;
+}
+
+body {
+    /* background-color: #E7E7EE; */
+    /* background-color: rgb(243, 240, 240); */
+    background-color: var(--box-color);
+    /* color: white; */
+    text-transform: uppercase;
+}
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #514b82;
+    -webkit-mask: radial-gradient(circle closest-side at 50% 40%, #0000 94%, #000);
+    transform-origin: 50% 40%;
+    animation: l25 1s infinite linear;
+}
+
+@keyframes l25 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+/* if we want to use this scroll bar any where just add this class name and set max-height to that div whatever we want  */
+
+
+.scrollable-container {
+    overflow: auto;
+}
+
+
+.scrollable-container::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+    background: #b8b2b2;
+    /* Track color */
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+    background-color: #47478c;
+    /* Scrollbar color */
+    border-radius: 10px;
+    /* Rounded edges */
+}
+
+.common-btn {
+
+    color: white;
+    background-color: #47478c;
+    border: 0px;
+    padding-left: 21px;
+    padding-right: 21px;
+    font-size: 17px;
+    min-height: 40px;
+    max-height: 40px;
+    margin-top: 8px;
+    margin-left: 10px;
+}
+
+.common-btn:hover {
+    color: #47478c;
+    background-color: white;
+    transition: 0.3s;
+    border: 1px solid;
+}
+
+.pagination {
+    margin-top: 5px;
+}
+
+.border1 {
+    border: 1px solid blue;
+}
+
+
+.tableStyle .MuiTableCell-root {
+    text-align: center;
+}
+
+.tableBodyStyle .MuiTableCell-root {
+    text-align: center;
+    font-size: 14px;
+}
