@@ -44,10 +44,11 @@ export default function Index() {
       <div className="d-flex">
         <div
           style={{
-            // color: "#47478C",
+            color: "#47478C",
+
             fontSize: "28px",
-            fontFamily:"serif",
-            // fontWeight: "bold",
+            fontFamily: "serif",
+            fontWeight: "bold",
             margin: "7px",
             marginLeft: "20px",
             width: "500px",
@@ -82,18 +83,6 @@ export default function Index() {
           <div className="">
             <Tooltip title="My Profile" placement="bottom-end">
               <IconButton onClick={handleOpenUserMenu}>
-                <span
-                  className="fs-6 fw-bold text-primary "
-                  style={{
-                    boxShadow: "-2px 0px 2px white",
-                    padding: "8px",
-                    // borderRadius: "50px",
-                  }}
-                >
-                  {" "}
-                  {/* {console.log(userData.profilePic, "the pic")} */}
-                  {/* {userData?.name?.toUpperCase() ?? "user"} */}
-                </span>
                 {/* <img
                   alt="User Image"
                   src={userData.profilePic}
@@ -130,7 +119,7 @@ export default function Index() {
                 </Typography>
               </MenuItem>
 
-              <MenuItem onClick={handleCloseUserMenu}>
+              {/* <MenuItem onClick={handleCloseUserMenu}>
                 <Typography
                   textAlign="center"
                   onClick={() => {
@@ -139,7 +128,7 @@ export default function Index() {
                 >
                   <SettingsIcon className="mx-2" /> Settings
                 </Typography>
-              </MenuItem>
+              </MenuItem> */}
 
               <MenuItem>
                 <Typography
@@ -213,11 +202,12 @@ export default function Index() {
       <div
         style={{
           border: "1px solid #d6d4d4",
-          padding: "2px",
+          paddingTop: "6px",
+
         }}
       >
-        <h6 className="text-center " style={{ color: "#47478C" }}>
-          © 2024 | Custom Dashboard | All rights reserved
+        <h6 className="text-center  " style={{ color: "#47478C" ,fontSize:"14px"}}>
+          © 2025 | Gold Gym | All rights reserved
         </h6>
       </div>
     </>

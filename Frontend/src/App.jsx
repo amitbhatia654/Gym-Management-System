@@ -72,6 +72,7 @@ function App() {
           <Route path="users" element={<UserDetails />}></Route>
           <Route path="update-profile" element={<UpdateProfile />}></Route>
           <Route path="employees" element={<Employee />}></Route>
+          <Route path="all members" element={<div>All Members</div>}></Route>
 
           <Route path="messages" element={<Messages />}></Route>
           <Route path="profile" element={<MyProfile></MyProfile>}></Route>
