@@ -22,7 +22,7 @@ import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 // import { add } from "../../reduxStore/UserSlice";
 import { loginSchema, registerSchema } from "../assets/FormSchema";
-import loginbg from "../../mernbg.jpg";
+import loginbg from "../../gym-login.webp";
 import { add } from "../reduxStore/UserSlice";
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -97,14 +97,15 @@ const LoginRegister = () => {
       >
         <Box minW={{ base: "90%", md: "468px" }}>
           <Heading
-            color="white"
-            className="p-2 text-center text-primary bg-white"
+            color="black"
+            className="p-2 text-center bg-white "
             fontSize="40px"
             fontWeight="bold"
             letterSpacing="wide"
             fontFamily="'Pacifico', cursive"
           >
-            Admin Dashboard
+            {" "}
+            Gym Management
           </Heading>
           <Formik
             initialValues={
@@ -131,18 +132,18 @@ const LoginRegister = () => {
                 <Stack
                   spacing={4}
                   p="1rem"
-                  backgroundColor="whiteAlpha.900"
+                  backgroundColor="whiteAlpha.700"
                   boxShadow="md"
                 >
                   <Heading
-                    color="blue"
-                    backgroundColor={"white"}
+                    color="black"
+                    // backgroundColor={"white"}
                     className="pb-2 text-center"
                     fontSize={"20px"}
                   >
                     {type == "login"
-                      ? "Log In to Your Account"
-                      : "Create Your Dashboard Account"}
+                      ? "Log In to Your Gym Account"
+                      : "Create  New Gym Owner"}
                   </Heading>
                   {type == "register" && (
                     <FormControl>
@@ -256,7 +257,7 @@ const LoginRegister = () => {
           </Formik>
         </Box>
       </Stack>
-      {type == "register" ? (
+      {/* {type == "register" ? (
         <Box>
           <Heading color="black" fontSize="18px">
             <span className="bg-white"> Already Register With Us !</span>
@@ -284,7 +285,7 @@ const LoginRegister = () => {
             </button>
           </Heading>
         </Box>
-      )}
+      )} */}
     </Flex>
   );
 };

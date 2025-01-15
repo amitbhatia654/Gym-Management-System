@@ -44,19 +44,20 @@ export default function Index() {
       <div className="d-flex">
         <div
           style={{
-            color: "#47478C",
+            // color: "#47478C",
             fontSize: "28px",
-            fontWeight: "bold",
+            fontFamily:"serif",
+            // fontWeight: "bold",
             margin: "7px",
             marginLeft: "20px",
-            width: "195px",
+            width: "500px",
           }}
         >
-          DashBoard
+          {userData?.name?.toUpperCase() ?? "user"}
         </div>
 
         <div className="d-flex justify-content-end w-100">
-          <div className=" my-1 ">
+          {/* <div className=" my-1 ">
             <IconButton
               size="large"
               aria-label="show 4 new mails"
@@ -76,7 +77,7 @@ export default function Index() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-          </div>
+          </div> */}
 
           <div className="">
             <Tooltip title="My Profile" placement="bottom-end">
@@ -91,7 +92,7 @@ export default function Index() {
                 >
                   {" "}
                   {/* {console.log(userData.profilePic, "the pic")} */}
-                  {userData?.name?.toUpperCase() ?? "user"}
+                  {/* {userData?.name?.toUpperCase() ?? "user"} */}
                 </span>
                 {/* <img
                   alt="User Image"

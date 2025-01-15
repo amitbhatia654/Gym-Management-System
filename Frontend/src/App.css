@@ -8,13 +8,14 @@
 }
 
 :root {
-    --box-color: #E7E7EE;
+    --box-color: #1414dd;
 }
 
 body {
     /* background-color: #E7E7EE; */
     /* background-color: rgb(243, 240, 240); */
-    background-color: var(--box-color);
+    /* background-color: var(--box-color); */
+    background-color: #faf8ee;
     /* color: white; */
     text-transform: uppercase;
 }
