@@ -113,3 +113,24 @@ body {
     /* background-color: #afafe4; */
     /* color: white; */
 }
+
+.member-box {
+    /* border: 1px solid black; */
+    height: 240px;
+    padding: 15px;
+    box-shadow: 1px 2px 4px 1px grey;
+}
+
+.member-image {
+    width: 140px;
+    height: 140px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.mymodal {
+    background-color: rgb(225, 226, 239);
+    box-shadow: 2px 2px 7px rgb(115, 115, 137);
+    color: blue !important;
+    border-radius: 20px;
+}

@@ -1,38 +1,25 @@
-export default function Modal({ setShowModal, title, children, handleSubmit }) {
+export default function Modal({ setShowModal, title, children, otherFunc }) {
   return (
     <>
-      <div className="modal show d-block" tabIndex="-1" role="dialog">
-        <div className="modal-dialog " role="document">
+      <div className="modal show d-block " tabIndex="-1" role="dialog">
+        <div
+          className="modal-dialog modal-lg modal-dialog-centered"
+          role="document"
+        >
           {/* modal-dialog-centered" */}
-          <div className="modal-content">
+          <div className="modal-content mymodal">
             <div className="modal-header">
-              <h5 className="modal-title">{title}</h5>
+              <h5 className="modal-tit text-center">{title}</h5>
               <button
                 type="button"
                 className="btn-close"
                 aria-label="Close"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false), otherFunc({});
+                }}
               ></button>
             </div>
             <div className="modal-body">{children}</div>
-            <div className="modal-footer">
-              {/* <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </button> */}
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => {
-                  handleSubmit( ), setShowModal(false);
-                }}
-              >
-                Save
-              </button>
-            </div>
           </div>
         </div>
       </div>

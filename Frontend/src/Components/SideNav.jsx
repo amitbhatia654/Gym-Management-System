@@ -5,13 +5,9 @@ import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import GradingIcon from "@mui/icons-material/Grading";
 import { useDispatch, useSelector } from "react-redux";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-
-// import { useFirebase } from "../context/Firebase";
-import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
-import { color } from "framer-motion";
 import { remove } from "../reduxStore/UserSlice";
 
 export default function SideNav({ isOpen }) {
@@ -21,7 +17,7 @@ export default function SideNav({ isOpen }) {
   const user = useSelector((state) => state.cart);
 
   const routes = [
-    { path: "Joined Members", logo: <ContactEmergencyIcon />, isAdmin: true },
+    { path: "joined members", logo: <ContactEmergencyIcon />, isAdmin: true },
 
     {
       path: "Expired Members plan",
@@ -29,10 +25,10 @@ export default function SideNav({ isOpen }) {
       isAdmin: true,
     },
 
-    { path: "Inactive Members", logo: <ContactEmergencyIcon />, isAdmin: true },
+    { path: "Inactive Members", logo: <GradingIcon />, isAdmin: true },
     { path: "Trainers", logo: <ContactEmergencyIcon />, isAdmin: true },
-    { path: "employees", logo: <ContactEmergencyIcon />, isAdmin: true },
-    { path: "Membership Plans", logo: <ContactEmergencyIcon />, isAdmin: true },
+    { path: "employees", logo: <SwitchAccountIcon />, isAdmin: true },
+    { path: "Membership Plans", logo: <GroupIcon />, isAdmin: true },
 
     // { path: "employees", logo: <ContactEmergencyIcon />, isAdmin: true },
     // { path: "Users", logo: <GroupIcon />, isAdmin: false },
@@ -65,9 +61,11 @@ export default function SideNav({ isOpen }) {
                 boxShadow: "0px 8px 18px rgba(158, 149, 149, 0.3)",
                 borderRadius: "8px",
                 color: "white",
-                backgroundColor: "black",
+                // backgroundColor: "#47478C",
               }}
-              // backgroundColor={`${location.pathname == "/" ? "#4eaefc" : ""}`}
+              backgroundColor={`${
+                location.pathname == "/" ? "black" : "#47478C"
+              }`}
             >
               <WidgetsIcon />
               <Box
@@ -101,7 +99,12 @@ export default function SideNav({ isOpen }) {
                       boxShadow: "0px 8px 18px rgba(0, 0, 0, 0.3)",
                       borderRadius: "8px",
                       color: "white",
-                      backgroundColor: "#47478C",
+                      // backgroundColor: "#47478C",
+                      backgroundColor: `${
+                        location.pathname.slice(1) == data.path
+                          ? "black"
+                          : "#47478C"
+                      }`,
                     }}
                     index={index}
                   >
@@ -133,7 +136,6 @@ export default function SideNav({ isOpen }) {
               my: 0.5,
               p: 1,
               boxShadow: "0px 8px 18px rgba(158, 149, 149, 0.3)",
-
             }}
           >
             <LogoutIcon />
