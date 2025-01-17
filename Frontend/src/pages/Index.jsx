@@ -209,8 +209,8 @@ export default function Index() {
           className="text-center  "
           style={{ color: "#47478C", fontSize: "14px" }}
         >
-            © Copyright{" "}
-          {userData?.name?.toUpperCase() ?? "Gym"} 2025. All rights reserved.
+          © Copyright {userData?.name?.toUpperCase() ?? "Gym"} 2025. All rights
+          reserved.
         </h6>
       </div>
     </>

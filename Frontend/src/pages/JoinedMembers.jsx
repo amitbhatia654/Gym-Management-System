@@ -5,39 +5,107 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./HelperPages/Modal";
 import { Formik, ErrorMessage, Form } from "formik";
 import axiosInstance from "../ApiManager";
 const dp_image = "../../images/user.jpg";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import toast from "react-hot-toast";
+import { addEmployee, addMember } from "../assets/FormSchema";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setloading] = useState(false);
-  const [editTopic, setEditTopic] = useState({});
+  const [editMember, setEditMember] = useState({});
+  const [search, setSearch] = useState("");
+  const [rowSize, setRowSize] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [allMembers, setAllMembers] = useState([]);
+
+  function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
 
   const handleSubmit = async (values) => {
+    // return console.log(values, "form values");
     setloading(true);
-    const res = editTopic._id
-      ? await axiosInstance.put(`/api/topic`, {
-          //   ...values,
-          //   folderId: selectedFolder._id,
-          //   topicId: editTopic._id,
-        })
-      : await axiosInstance.post(`/api/topic`, {
-          ...values,
-          //   selectedFolder,
-        });
+    if (values?.profilePic?.name) {
+      const base64 = await convertFileToBase64(values?.profilePic);
+      var data = { ...values, profilePic: base64 };
+    } else data = { ...values };
+
+    const res = editMember._id
+      ? await axiosInstance.put(`/api/gym/member`, data)
+      : await axiosInstance.post(`/api/gym/member`, data);
 
     setloading(false);
     if (res.status == 200) {
+      if (editMember._id) {
+        const updatedMember = allMembers.map((folder) => {
+          if (folder._id == values._id) {
+            return res.data.result;
+          }
+
+          return folder;
+        });
+
+        setAllMembers(updatedMember);
+      }
+      allMembers.push(res.data.result);
       toast.success(res.data.message);
-      setEditTopic({});
+      setEditMember({});
       setShowModal(false);
     }
   };
 
+  const deleteMember = async (memberId) => {
+    // console.log(memberId);
+    const res = await axiosInstance.delete(`/api/gym/member`, {
+      data: { memberId },
+    });
+    if (res.status == 200) {
+      toast.success(res.data.message);
+      // const updatedFolders = allMembers.map((member) => {
+      //   if (member._id == values._id) {
+      //     return {
+      //     };
+      //   }
+      //   return folder;
+      // });
+      const updatedMembers = allMembers.filter(
+        (member) => member._id !== memberId
+      );
+      setAllMembers(updatedMembers);
+    } else toast.error(res.data.message);
+  };
+
+  const fetchData = async () => {
+    setloading(true);
+
+    const res = await axiosInstance.get("/api/gym/member", {
+      params: { search, rowSize, currentPage },
+    });
+    if (res.status == 200) {
+      setAllMembers(res.data.response);
+      setTotalCount(res.data.totalCount);
+    } else {
+      setAllEmployee([]);
+      setTotalCount(0);
+    }
+    setloading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -65,33 +133,94 @@ export default function JoinedMembers() {
             placeholder="search"
           ></TextField>
 
-          <button className="common-btn" onClick={() => setShowModal(true)}>
+          <button
+            className="common-btn"
+            onClick={() => {
+              setEditMember({}), setShowModal(true);
+            }}
+          >
             Add Member <FitnessCenterIcon />
           </button>
         </div>
       </div>
 
-      <div className="container mt-3">
-        <div className="row">
-          <div className="col-md-3 member-box d-flex flex-column align-items-center ">
-            <img src={dp_image} alt="" className="member-image" />
-            Amit Bhatia
-            <span>8726773631</span>
-            <span>Next Bill Data :16-02-05</span>
-          </div>
-        </div>
+      <div className="d-flex flex-wrap mt-4">
+        {allMembers.length > 0
+          ? allMembers.map((member, id) => {
+              return (
+                <div
+                  className=" member-box d-flex flex-column align-items-center "
+                  key={id}
+                >
+                  <img
+                    src={member.profilePic ? member.profilePic : dp_image}
+                    alt=""
+                    className="member-image"
+                  />
+                  {member.name}
+                  <span>+91 {member?.phone_number}</span>
+                  <span>
+                    Next Bill Date :16-02-05{" "}
+                    <span className="dropdown">
+                      <button
+                        className="btn "
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <h6>
+                          <MoreVertIcon sx={{ fontSize: "19px" }} />
+                        </h6>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => {
+                              setEditMember(member), setShowModal(true);
+                            }}
+                          >
+                            Edit
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => deleteMember(member._id)}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </span>
+                  </span>
+                </div>
+              );
+            })
+          : "No Member Added Yet"}
       </div>
 
       {showModal && (
         <Modal
           setShowModal={setShowModal}
-          //   otherFunc={setEditTopic}
-          title={`${editTopic._id ? "Edit" : "Add"} Member `}
+          //   otherFunc={setEditMember}
+          title={`${editMember._id ? "Edit" : "Add"} Member `}
           handleSubmit={handleSubmit}
         >
           <Formik
-            initialValues={{ title: editTopic ? editTopic.title : "" }}
-            // validationSchema={addEmployee}
+            initialValues={
+              editMember._id
+                ? editMember
+                : {
+                    name: "",
+                    address: "",
+                    phone_number: "",
+                    doj: "",
+                    memberPlan: "",
+                    profilePic: "",
+                  }
+            }
+            // validationSchema={addMember}
             enableReinitialize={true}
             onSubmit={(values) => handleSubmit(values)}
           >
@@ -103,92 +232,162 @@ export default function JoinedMembers() {
                       <div className="container">
                         <div className="row mt-3">
                           <div className="col-md-6">
-                            <div class="form-group">
-                              <label for="exampleInputEmail1">Name</label>
+                            <div className="form-group">
+                              <label htmlFor="exampleInputEmail1">Name</label>
                               <input
                                 type="text"
-                                class="form-control"
+                                className="form-control"
                                 id="exampleInputEmail1"
-                                // aria-describedby="emailHelp"
                                 placeholder="Enter Name"
-                                // value={props.values.title}
+                                value={props.values.name}
+                                name="name"
+                                onChange={props.handleChange}
+                              />
+
+                              <ErrorMessage
+                                name="name"
+                                component="div"
+                                style={{ color: "red" }}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="phone-number">Phone Number</label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="phone-number"
+                                placeholder="Enter Phone Number"
+                                value={props.values.phone_number}
+                                name="phone_number"
+                                // onChange={props.handleChange}
+                                onChange={(e) => {
+                                  if (e.target.value.length < 11)
+                                    props.setFieldValue(
+                                      "phone_number",
+                                      e.target.value
+                                    );
+                                }}
+                              />
+                            </div>
+                            <ErrorMessage
+                              name="phone_number"
+                              component="div"
+                              style={{ color: "red" }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="row mt-3">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="address">Address</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="address"
+                                placeholder="Enter Address"
+                                value={props.values.address}
+                                name="address"
                                 onChange={props.handleChange}
                               />
                             </div>
+                            <ErrorMessage
+                              name="address"
+                              component="div"
+                              style={{ color: "red" }}
+                            />
                           </div>
 
                           <div className="col-md-6">
-                            <div class="form-group">
-                              <label for="exampleInputEmail1">
-                                Phone Number
-                              </label>
+                            <div className="form-group">
+                              <label htmlFor="joining-date">Joining Date</label>
                               <input
-                                type="email"
-                                class="form-control"
-                                id="exampleInputEmail1"
-                                aria-describedby="emailHelp"
+                                type="date"
+                                className="form-control"
+                                id="joining-date"
+                                name="doj"
+                                value={props.values.doj}
+                                onChange={(e) => {
+                                  props.setFieldValue("doj", e.target.value);
+                                }}
                               />
                             </div>
+                            <ErrorMessage
+                              name="doj"
+                              component="div"
+                              style={{ color: "red" }}
+                            />
                           </div>
                         </div>
 
                         <div className="row mt-3">
                           <div className="col-md-6">
-                            <div class="form-group">
-                              <label for="exampleInputEmail1">Address</label>
-                              <input
-                                type="email"
-                                class="form-control"
-                                id="exampleInputEmail1"
-                                aria-describedby="emailHelp"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-md-6">
-                            <div class="form-group">
-                              <label for="exampleInputEmail1">
-                                Profile Pic
-                              </label>
-                              <input
-                                type="email"
-                                class="form-control"
-                                id="exampleInputEmail1"
-                                aria-describedby="emailHelp"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="row mt-3">
-                          <div className="col-md-6">
-                            <div class="form-group">
-                              <label for="exampleInputEmail1">
-                                Joining Date
-                              </label>
-                              <input
-                                type="email"
-                                class="form-control"
-                                id="exampleInputEmail1"
-                                aria-describedby="emailHelp"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-md-6">
-                            <div class="form-group">
-                              <label for="exampleFormControlSelect1">
+                            <div className="form-group">
+                              <label htmlFor="membership">
                                 Membership Plan
                               </label>
                               <select
-                                class="form-control"
-                                id="exampleFormControlSelect1"
+                                className="form-control"
+                                id="membership"
+                                name="memberPlan"
+                                values={props.values.memberPlan}
+                                onChange={(e) =>
+                                  props.setFieldValue(
+                                    "memberPlan",
+                                    e.target.value
+                                  )
+                                }
                               >
-                                <option>1 Month</option>
-                                <option>2 Month</option>
-                                <option>3 Month</option>
-                                <option>6 Month</option>
+                                <option value={"1 month"}>1 Month</option>
+                                <option value={"2 month"}>2 Month</option>
+                                <option value={"3 month"}>3 Month</option>
+                                <option value={"6 month"}>6 Month</option>
                               </select>
+                            </div>
+                          </div>
+
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="pic">Profile Pic</label>
+                              <br />
+
+                              {props.values.profilePic.name ||
+                              props.values.profilePic == "" ? (
+                                <>
+                                  <input
+                                    type="file"
+                                    className="form-control "
+                                    id="pic"
+                                    name="profilePic"
+                                    onChange={(e) =>
+                                      props.setFieldValue(
+                                        "profilePic",
+                                        e.target.files[0]
+                                      )
+                                    }
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <img
+                                    src={props.values?.profilePic}
+                                    alt=""
+                                    className="pic-form"
+                                  />
+                                  <br />
+                                  <button
+                                    className="common-btn mx-0"
+                                    type="button"
+                                    onClick={() =>
+                                      props.setFieldValue("profilePic", "")
+                                    }
+                                  >
+                                    Change Pic
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>

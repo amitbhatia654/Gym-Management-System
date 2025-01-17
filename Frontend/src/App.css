@@ -81,7 +81,11 @@ body {
     max-height: 40px;
     margin-top: 8px;
     margin-left: 10px;
+    /* transition: all 0.8s ease-in-out; */
 }
+
+
+
 
 .common-btn:hover {
     color: #47478c;
@@ -116,14 +120,19 @@ body {
 
 .member-box {
     /* border: 1px solid black; */
-    height: 240px;
-    padding: 15px;
-    box-shadow: 1px 2px 4px 1px grey;
+    height: 250px;
+    /* width: 240px; */
+    padding: 20px;
+    box-shadow: 1px 2px 4px 2px grey;
+    margin: 6px;
+    background-color: #c4c4e6;
+    color: rgb(5, 5, 59);
 }
 
 .member-image {
     width: 140px;
-    height: 140px;
+    min-height: 140px;
+    max-height: 140px;
     border: 1px solid black;
     border-radius: 20px;
 }
@@ -133,4 +142,10 @@ body {
     box-shadow: 2px 2px 7px rgb(115, 115, 137);
     color: blue !important;
     border-radius: 20px;
+}
+
+.pic-form {
+    max-height: 150px;
+    max-width: 170px;
+    /* margin-left: 10px; */
 }

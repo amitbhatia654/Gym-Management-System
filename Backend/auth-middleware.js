@@ -13,7 +13,7 @@ const AuthMiddleWare = async (req, res, next) => {
 
         const isVerified = jwt.verify(jwtToken, process.env.secretKey)
         const userData = await User.findOne({ email: isVerified.email }).select({ password: 0 })
-        req.userDetail = userData
+        req.loginUser = userData
         next();
 
     } catch (error) {

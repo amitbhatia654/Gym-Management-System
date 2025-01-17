@@ -12,6 +12,18 @@ export const addEmployee = Yup.object({
   empAddress: Yup.string().required("address is required"),
 });
 
+export const addMember = Yup.object({
+  name: Yup.string().required(" Member name is required"),
+  address: Yup.string().required("Member Address is required"),
+  phone_number: Yup.string()
+    .matches(
+      /^[5-9]\d{9}$/,
+      "Phone number must be at least 10 digits and must be Valid"
+    )
+    .required("phone number is required"),
+  doj: Yup.string().required("Date of Joining is required"),
+});
+
 export const updateProfileSchema = Yup.object({
   name: Yup.string().required(" name is required"),
   email: Yup.string().required("email is required"),
