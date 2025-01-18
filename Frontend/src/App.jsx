@@ -12,6 +12,7 @@ import UserDetails from "./pages/Users/UsersDetails";
 import UpdateProfile from "./pages/UpdateProfile";
 import LoginRegister from "./Components/LoginRegister";
 import JoinedMembers from "./pages/JoinedMembers";
+import MemberDetailsPage from "./pages/MemberDetailsPage";
 
 function App() {
   const isUserLogin = () => {
@@ -58,6 +59,11 @@ function App() {
           <Route
             path="joined members"
             element={<JoinedMembers></JoinedMembers>}
+          ></Route>
+
+          <Route
+            path="member-details"
+            element={<MemberDetailsPage></MemberDetailsPage>}
           ></Route>
 
           <Route path="profile" element={<MyProfile></MyProfile>}></Route>

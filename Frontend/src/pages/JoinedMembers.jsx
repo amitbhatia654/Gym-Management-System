@@ -12,19 +12,22 @@ import axiosInstance from "../ApiManager";
 const dp_image = "../../images/user.jpg";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import toast from "react-hot-toast";
-import { addEmployee, addMember } from "../assets/FormSchema";
+import { addMember } from "../assets/FormSchema";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Pagination from "./HelperPages/Pagination";
+import { useNavigate } from "react-router-dom";
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setloading] = useState(false);
   const [editMember, setEditMember] = useState({});
   const [search, setSearch] = useState("");
-  const [rowSize, setRowSize] = useState(6);
+  const [rowSize, setRowSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [allMembers, setAllMembers] = useState([]);
-
+  const totalPages = Math.ceil(totalCount / rowSize);
+  const navigate = useNavigate();
   function convertFileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -73,13 +76,7 @@ export default function JoinedMembers() {
     });
     if (res.status == 200) {
       toast.success(res.data.message);
-      // const updatedFolders = allMembers.map((member) => {
-      //   if (member._id == values._id) {
-      //     return {
-      //     };
-      //   }
-      //   return folder;
-      // });
+
       const updatedMembers = allMembers.filter(
         (member) => member._id !== memberId
       );
@@ -105,7 +102,7 @@ export default function JoinedMembers() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [search, rowSize, currentPage]);
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -127,8 +124,8 @@ export default function JoinedMembers() {
             sx={{ width: "200px", mt: 1 }}
             size="small"
             onChange={(e) => {
-              //   setSearch(e.target.value);
-              //   setCurrentPage(1);
+              setSearch(e.target.value);
+              setCurrentPage(1);
             }}
             placeholder="search"
           ></TextField>
@@ -143,62 +140,80 @@ export default function JoinedMembers() {
           </button>
         </div>
       </div>
-
-      <div className="d-flex flex-wrap mt-4">
-        {allMembers.length > 0
-          ? allMembers.map((member, id) => {
-              return (
-                <div
-                  className=" member-box d-flex flex-column align-items-center "
-                  key={id}
-                >
-                  <img
-                    src={member.profilePic ? member.profilePic : dp_image}
-                    alt=""
-                    className="member-image"
-                  />
-                  {member.name}
-                  <span>+91 {member?.phone_number}</span>
-                  <span>
-                    Next Bill Date :16-02-05{" "}
-                    <span className="dropdown">
-                      <button
-                        className="btn "
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
+      <div className="container">
+        <div className="scrollable-container" style={{ maxHeight: "76vh" }}>
+          <div className="d-flex flex-wrap mt-1">
+            {allMembers.length > 0
+              ? allMembers.map((member, id) => {
+                  return (
+                    <div className=" member-box text-center " key={id}>
+                      <div
+                        onClick={() =>
+                          navigate("/member-details", {
+                            state: { data: member },
+                          })
+                        }
+                        className="member"
                       >
-                        <h6>
-                          <MoreVertIcon sx={{ fontSize: "19px" }} />
-                        </h6>
-                      </button>
-                      <ul className="dropdown-menu">
-                        <li>
+                        <img
+                          src={member.profilePic ? member.profilePic : dp_image}
+                          alt=""
+                          className="member-image"
+                        />
+
+                        <div> {member.name}</div>
+                        <div>+91 {member?.phone_number}</div>
+                      </div>
+                      <span>
+                        Next Bill Date :16-02-05{" "}
+                        <span className="dropdown">
                           <button
-                            className="dropdown-item"
-                            onClick={() => {
-                              setEditMember(member), setShowModal(true);
-                            }}
+                            className="btn "
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                           >
-                            Edit
+                            <h6>
+                              <MoreVertIcon sx={{ fontSize: "19px" }} />
+                            </h6>
                           </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => deleteMember(member._id)}
-                          >
-                            Delete
-                          </button>
-                        </li>
-                      </ul>
-                    </span>
-                  </span>
-                </div>
-              );
-            })
-          : "No Member Added Yet"}
+                          <ul className="dropdown-menu">
+                            <li>
+                              <button
+                                className="dropdown-item"
+                                onClick={() => {
+                                  setEditMember(member), setShowModal(true);
+                                }}
+                              >
+                                Edit
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="dropdown-item"
+                                onClick={() => deleteMember(member._id)}
+                              >
+                                Delete
+                              </button>
+                            </li>
+                          </ul>
+                        </span>
+                      </span>
+                    </div>
+                  );
+                })
+              : "No Member Added Yet"}
+          </div>
+        </div>
       </div>
+
+      <Pagination
+        setRowSize={setRowSize}
+        rowSize={rowSize}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      ></Pagination>
 
       {showModal && (
         <Modal
@@ -220,7 +235,7 @@ export default function JoinedMembers() {
                     profilePic: "",
                   }
             }
-            // validationSchema={addMember}
+            validationSchema={addMember}
             enableReinitialize={true}
             onSubmit={(values) => handleSubmit(values)}
           >

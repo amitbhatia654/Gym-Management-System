@@ -55,7 +55,7 @@ const getAllJoinedMembers = async (req, res) => {
         const createdBy = req.loginUser._id
 
         const query = search
-            ? { createdBy, empName: { $regex: search, $options: "i" } }
+            ? { createdBy, name: { $regex: search, $options: "i" } }
             : { createdBy };
 
         const response = await Member.find(query).skip(skip).limit(rowSize)

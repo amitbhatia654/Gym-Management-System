@@ -185,12 +185,13 @@ export default function Index() {
           <div
             className="scrollable-container "
             style={{
-              minHeight: "87vh",
-              maxHeight: "87vh",
-              padding: "10px",
-              paddingLeft: "12px",
-              paddingRight: "12px",
+              minHeight: "91vh",
+              maxHeight: "91vh",
+              // padding: "5px",
+              paddingLeft: "14px",
+              paddingRight: "14px",
               // boxShadow: " inset  0px 0px 2px 1px grey",
+              // border:"1px solid black"
               // borderRadius: "10px",
               // margin: "5px",
             }}
@@ -199,7 +200,7 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           border: "1px solid #d6d4d4",
           paddingTop: "6px",
@@ -212,7 +213,7 @@ export default function Index() {
           © Copyright {userData?.name?.toUpperCase() ?? "Gym"} 2025. All rights
           reserved.
         </h6>
-      </div>
+      </div> */}
     </>
   );
 }

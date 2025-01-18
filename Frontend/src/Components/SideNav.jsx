@@ -41,7 +41,7 @@ export default function SideNav({ isOpen }) {
     <>
       <div
         className="d-flex flex-column justify-content-between"
-        style={{ minHeight: "83vh" }}
+        style={{ minHeight: "86vh" }}
       >
         <div>
           <Link

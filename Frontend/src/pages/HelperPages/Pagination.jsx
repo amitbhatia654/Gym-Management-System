@@ -30,7 +30,7 @@ export default function Pagination({
               size="small"
               sx={{ mt: 1, m: 1 }}
             >
-              <MenuItem value="6">6</MenuItem>
+              <MenuItem value="8">8</MenuItem>
               <MenuItem value="12">12</MenuItem>
               <MenuItem value="18">18</MenuItem>
             </TextField>
