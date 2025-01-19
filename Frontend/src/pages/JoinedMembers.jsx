@@ -62,10 +62,10 @@ export default function JoinedMembers() {
 
         setAllMembers(updatedMember);
       }
-      allMembers.push(res.data.result);
+      if (allMembers.length < rowSize) allMembers.push(res.data.result);
       toast.success(res.data.message);
       setEditMember({});
-      setShowModal(false);
+      // setShowModal(false);
     }
   };
 
@@ -86,15 +86,16 @@ export default function JoinedMembers() {
 
   const fetchData = async () => {
     setloading(true);
+    const type='joined'
 
     const res = await axiosInstance.get("/api/gym/member", {
-      params: { search, rowSize, currentPage },
+      params: { search, rowSize, currentPage,type },
     });
     if (res.status == 200) {
       setAllMembers(res.data.response);
       setTotalCount(res.data.totalCount);
     } else {
-      setAllEmployee([]);
+      setAllMembers([]);
       setTotalCount(0);
     }
     setloading(false);
@@ -141,7 +142,10 @@ export default function JoinedMembers() {
         </div>
       </div>
       <div className="container">
-        <div className="scrollable-container" style={{ maxHeight: "76vh" }}>
+        <div
+          className="scrollable-container"
+          style={{ minHeight: "74vh", maxHeight: "74vh" }}
+        >
           <div className="d-flex flex-wrap mt-1">
             {allMembers.length > 0
               ? allMembers.map((member, id) => {
@@ -161,11 +165,15 @@ export default function JoinedMembers() {
                           className="member-image"
                         />
 
-                        <div> {member.name}</div>
+                        <div className="fw-bold mt-2"> {member.name}</div>
                         <div>+91 {member?.phone_number}</div>
                       </div>
                       <span>
-                        Next Bill Date :16-02-05{" "}
+                        Valid Till :
+                        <span className="text-danger">
+                          {" "}
+                          {member?.ValidTill ?? "--"}{" "}
+                        </span>
                         <span className="dropdown">
                           <button
                             className="btn "
@@ -235,7 +243,7 @@ export default function JoinedMembers() {
                     profilePic: "",
                   }
             }
-            validationSchema={addMember}
+            // validationSchema={addMember}
             enableReinitialize={true}
             onSubmit={(values) => handleSubmit(values)}
           >
@@ -347,18 +355,18 @@ export default function JoinedMembers() {
                                 className="form-control"
                                 id="membership"
                                 name="memberPlan"
-                                values={props.values.memberPlan}
+                                value={props.values.memberPlan} // Ensure it's `value`, not `values`
                                 onChange={(e) =>
                                   props.setFieldValue(
                                     "memberPlan",
                                     e.target.value
                                   )
-                                }
+                                } // Update state
                               >
-                                <option value={"1 month"}>1 Month</option>
-                                <option value={"2 month"}>2 Month</option>
-                                <option value={"3 month"}>3 Month</option>
-                                <option value={"6 month"}>6 Month</option>
+                                <option value={1}>1 Month</option>
+                                <option value={2}>2 Month</option>
+                                <option value={3}>3 Month</option>
+                                <option value={6}>6 Month</option>
                               </select>
                             </div>
                           </div>

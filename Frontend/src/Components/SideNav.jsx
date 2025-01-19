@@ -17,18 +17,12 @@ export default function SideNav({ isOpen }) {
   const user = useSelector((state) => state.cart);
 
   const routes = [
-    { path: "joined members", logo: <ContactEmergencyIcon />, isAdmin: true },
+    { path: "joined-members", logo: <ContactEmergencyIcon />, isAdmin: true },
 
-    {
-      path: "Expired Members plan",
-      logo: <ContactEmergencyIcon />,
-      isAdmin: true,
-    },
-
-    { path: "Inactive Members", logo: <GradingIcon />, isAdmin: true },
+    { path: "Inactive-Members", logo: <GradingIcon />, isAdmin: true },
     { path: "Trainers", logo: <ContactEmergencyIcon />, isAdmin: true },
     { path: "employees", logo: <SwitchAccountIcon />, isAdmin: true },
-    { path: "Membership Plans", logo: <GroupIcon />, isAdmin: true },
+    { path: "Membership-Plans", logo: <GroupIcon />, isAdmin: true },
 
     // { path: "employees", logo: <ContactEmergencyIcon />, isAdmin: true },
     // { path: "Users", logo: <GroupIcon />, isAdmin: false },

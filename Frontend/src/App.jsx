@@ -13,6 +13,7 @@ import UpdateProfile from "./pages/UpdateProfile";
 import LoginRegister from "./Components/LoginRegister";
 import JoinedMembers from "./pages/JoinedMembers";
 import MemberDetailsPage from "./pages/MemberDetailsPage";
+import InactiveMembers from "./pages/InactiveMembers";
 
 function App() {
   const isUserLogin = () => {
@@ -57,8 +58,13 @@ function App() {
           <Route path="update-profile" element={<UpdateProfile />}></Route>
           <Route path="employees" element={<Employee />}></Route>
           <Route
-            path="joined members"
+            path="joined-members"
             element={<JoinedMembers></JoinedMembers>}
+          ></Route>
+
+          <Route
+            path="inactive-members"
+            element={<InactiveMembers></InactiveMembers>}
           ></Route>
 
           <Route

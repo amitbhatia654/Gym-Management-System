@@ -63,6 +63,10 @@ export default function MemberDetailsPage() {
                     <span className="fw-bold">Membership Plan :</span>{" "}
                     {data?.memberPlan || "--"}{" "}
                   </li>
+                  <li>
+                    <span className="fw-bold">Next Bill Date :</span>{" "}
+                    {data?.ValidTill || "--"}{" "}
+                  </li>
                 </ul>
               </div>
             </div>
