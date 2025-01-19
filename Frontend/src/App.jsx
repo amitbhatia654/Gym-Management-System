@@ -14,6 +14,8 @@ import LoginRegister from "./Components/LoginRegister";
 import JoinedMembers from "./pages/JoinedMembers";
 import MemberDetailsPage from "./pages/MemberDetailsPage";
 import InactiveMembers from "./pages/InactiveMembers";
+import MemberShipPlans from "./pages/MemberShipPlans";
+import Trainers from "./pages/Trainers";
 
 function App() {
   const isUserLogin = () => {
@@ -70,6 +72,13 @@ function App() {
           <Route
             path="member-details"
             element={<MemberDetailsPage></MemberDetailsPage>}
+          ></Route>
+
+          <Route path="trainers" element={<Trainers></Trainers>}></Route>
+
+          <Route
+            path="membership-plans"
+            element={<MemberShipPlans></MemberShipPlans>}
           ></Route>
 
           <Route path="profile" element={<MyProfile></MyProfile>}></Route>

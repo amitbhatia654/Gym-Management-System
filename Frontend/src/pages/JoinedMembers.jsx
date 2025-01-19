@@ -86,10 +86,10 @@ export default function JoinedMembers() {
 
   const fetchData = async () => {
     setloading(true);
-    const type='joined'
+    const type = "joined";
 
     const res = await axiosInstance.get("/api/gym/member", {
-      params: { search, rowSize, currentPage,type },
+      params: { search, rowSize, currentPage, type },
     });
     if (res.status == 200) {
       setAllMembers(res.data.response);
@@ -165,15 +165,15 @@ export default function JoinedMembers() {
                           className="member-image"
                         />
 
-                        <div className="fw-bold mt-2"> {member.name}</div>
+                        <div className="fw-bold mt-2" style={{ color: "blue" }}>
+                          {" "}
+                          {member.name}
+                        </div>
                         <div>+91 {member?.phone_number}</div>
                       </div>
                       <span>
                         Valid Till :
-                        <span className="text-danger">
-                          {" "}
-                          {member?.ValidTill ?? "--"}{" "}
-                        </span>
+                        <span className=""> {member?.ValidTill ?? "--"} </span>
                         <span className="dropdown">
                           <button
                             className="btn "

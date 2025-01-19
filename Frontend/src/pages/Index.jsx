@@ -45,7 +45,6 @@ export default function Index() {
         <div
           style={{
             color: "#47478C",
-
             fontSize: "28px",
             fontFamily: "serif",
             fontWeight: "bold",
@@ -152,7 +151,7 @@ export default function Index() {
         <div
           className={!isOpen ? "sidenav-full" : "sidenav-small"}
           style={{
-            borderTop: "2px solid grey",
+            borderTop: "2px solid white",
             borderRight: "2px solid grey",
           }}
         >
@@ -179,7 +178,7 @@ export default function Index() {
           className="scrollable-container"
           style={{
             width: "100%",
-            borderTop: "2px solid grey",
+            borderTop: "2px solid white",
           }}
         >
           <div
@@ -187,7 +186,7 @@ export default function Index() {
             style={{
               minHeight: "91vh",
               maxHeight: "91vh",
-              // padding: "5px",
+              padding: "2px",
               paddingLeft: "14px",
               paddingRight: "14px",
               // boxShadow: " inset  0px 0px 2px 1px grey",

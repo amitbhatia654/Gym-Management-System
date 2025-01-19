@@ -30,44 +30,153 @@ export default function MemberDetailsPage() {
                 <img
                   src={data?.profilePic || dp_image}
                   alt=""
-                  height={"230px"}
-                  width={"250px"}
+                  height={"280px"}
+                  width={"280px"}
                   style={{
-                    borderRadius: "50%",
+                    // borderRadius: "50%",
                     boxShadow: " 2px 1px 10px grey",
                   }}
                 />
               </div>
               <div
-                className="col-md-8 my-2 "
-                // style={{ boxShadow: " 2px 1px 10px grey" }}
+                className="col-md-8  "
+                // style={{ boxShadow: " 2px 1px 5px grey" }}
               >
-                <ul className="list-unstyled fs-5 py-2">
-                  <li>
-                    {" "}
-                    <span className="fw-bold">Name :</span> {data?.name}{" "}
-                  </li>
-                  <li>
-                    <span className="fw-bold">Phone Number :</span>{" "}
-                    {data?.phone_number}{" "}
-                  </li>
-                  <li>
-                    <span className="fw-bold">Address :</span> {data?.address}{" "}
-                  </li>
-                  <li>
-                    <span className="fw-bold">Date of Joining :</span>{" "}
-                    {data?.doj || "--"}{" "}
-                  </li>
+                {/* <table>
+                  <tr>
+                    <thead>Name </thead>
+                    <td>{data?.name}</td>
+                  </tr>
+                  <tr>
+                    <thead>Phone Number </thead>
+                    <td>{data?.phone_number}</td>
+                  </tr>
+                  <tr>
+                    <thead>Address </thead>
+                    <td>{data?.address}</td>
+                  </tr>
+                  <tr>
+                    <thead>Date of Joining </thead>
+                    <td>{data?.doj}</td>
+                  </tr>
 
-                  <li>
-                    <span className="fw-bold">Membership Plan :</span>{" "}
-                    {data?.memberPlan || "--"}{" "}
-                  </li>
-                  <li>
-                    <span className="fw-bold">Next Bill Date :</span>{" "}
-                    {data?.ValidTill || "--"}{" "}
-                  </li>
-                </ul>
+                  <tr>
+                    <thead>Membership Plan </thead>
+                    <td>{data?.memberPlan}</td>
+                  </tr>
+
+                  <tr>
+                    <thead>Next Bill Date </thead>
+                    <td>{data?.ValidTill}</td>
+                  </tr>
+                </table> */}
+
+                <table
+                  style={{
+                    width: "100%",
+                    // borderCollapse: "collapse",
+                    // border:"2px solid grey"
+                    // margin: "20px 0",
+                    // backgroundColor: "#f4f4f4",
+                  }}
+                  // style={{}}
+                >
+                  <thead></thead>
+                  <tbody>
+                    <tr
+                      style={{
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <td
+                        style={{
+                          padding: "10px",
+                          // border: "1px solid white",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Name
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd",color:"blue" }}>
+                        {data?.name}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Phone Number
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        {data?.phone_number}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Address
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        {data?.address}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Date of Joining
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        {data?.doj}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Membership Plan
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        {data?.memberPlan} Month
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Next Bill Date
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        {data?.ValidTill}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                
               </div>
             </div>
           </div>

@@ -58,7 +58,7 @@ export default function SideNav({ isOpen }) {
                 // backgroundColor: "#47478C",
               }}
               backgroundColor={`${
-                location.pathname == "/" ? "black" : "#47478C"
+                location.pathname == "/" ? "#060672" : "blue"
               }`}
             >
               <WidgetsIcon />
@@ -79,7 +79,7 @@ export default function SideNav({ isOpen }) {
                   style={{
                     textDecoration: "none",
                     textTransform: "capitalize",
-                    fontSize: "16px",
+                    fontSize: "15px",
                     color: `${
                       location.pathname.slice(1) == data.path ? "blue" : "black"
                     }`,
@@ -96,8 +96,8 @@ export default function SideNav({ isOpen }) {
                       // backgroundColor: "#47478C",
                       backgroundColor: `${
                         location.pathname.slice(1) == data.path
-                          ? "black"
-                          : "#47478C"
+                          ? "#060672"
+                          : "blue"
                       }`,
                     }}
                     index={index}
