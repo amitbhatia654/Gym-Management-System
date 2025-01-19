@@ -162,7 +162,7 @@ export default function InactiveMembers() {
                         <div>+91 {member?.phone_number}</div>
                       </div>
                       <span>
-                        Valid Till :
+                        Expired on:
                         <span className="text-danger">
                           {" "}
                           {member?.ValidTill ?? "--"}{" "}

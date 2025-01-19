@@ -88,8 +88,6 @@ const getAllJoinedMembers = async (req, res) => {
         const createdBy = req.loginUser._id;
         const type = req.query.type;
 
-        // console.log(new Date(), 'type')
-
         // Base query
         let query = { createdBy };
 
@@ -102,22 +100,26 @@ const getAllJoinedMembers = async (req, res) => {
             ];
         }
 
-
-
-        // if (search) {
-        //     query.name = { $regex: search, $options: "i" };
-        // }
-        const currentDate = moment().format("DD-MM-YYYY");
+        const currentDate = moment().toDate();
         // Add validTill condition based on type
         if (type == "joined") {
-            query.ValidTill = { $gte: currentDate }; // Fetch records with validTill >= current date
+            query.$expr = {
+                $gte: [
+                    { $dateFromString: { dateString: "$ValidTill", format: "%d-%m-%Y" } },
+                    currentDate,
+                ],
+            }; // Fetch records with validTill >= current date
         } else if (type == "inactive") {
-            query.ValidTill = { $lt: currentDate }; // Fetch records with validTill < current date
+            query.$expr = {
+                $lt: [
+                    { $dateFromString: { dateString: "$ValidTill", format: "%d-%m-%Y" } },
+                    currentDate,
+                ],
+            }; // Fetch records with validTill < current date
         }
 
         // Fetch members with pagination
         const response = await Member.find(query).skip(skip).limit(rowSize);
-
         // Count total documents for pagination
         const totalCount = await Member.countDocuments(query);
 
