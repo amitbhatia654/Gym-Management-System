@@ -23,13 +23,7 @@ export default function SideNav({ isOpen }) {
     { path: "Trainers", logo: <ContactEmergencyIcon />, isAdmin: true },
     { path: "employees", logo: <SwitchAccountIcon />, isAdmin: true },
     { path: "Membership-Plans", logo: <GroupIcon />, isAdmin: true },
-
-    // { path: "employees", logo: <ContactEmergencyIcon />, isAdmin: true },
-    // { path: "Users", logo: <GroupIcon />, isAdmin: false },
-    // { path: "Messages", logo: <SwitchAccountIcon />, isAdmin: true },
-    // { path: "orders", logo: <GradingIcon />, isAdmin: true },
-    // { path: "settings", logo: <SettingsIcon />, isAdmin: true },
-    { path: "profile", logo: <AccountBoxIcon />, isAdmin: true },
+    { path: "gym-profile", logo: <AccountBoxIcon />, isAdmin: true },
   ];
   return (
     <>
@@ -56,9 +50,10 @@ export default function SideNav({ isOpen }) {
                 borderRadius: "8px",
                 color: "white",
                 // backgroundColor: "#47478C",
+                color: `${location.pathname == "/" ? "white" : "black"}`,
               }}
               backgroundColor={`${
-                location.pathname == "/" ? "#060672" : "blue"
+                location.pathname == "/" ? "blue" : "white"
               }`}
             >
               <WidgetsIcon />
@@ -92,12 +87,17 @@ export default function SideNav({ isOpen }) {
                       p: 1,
                       boxShadow: "0px 8px 18px rgba(0, 0, 0, 0.3)",
                       borderRadius: "8px",
-                      color: "white",
+                      // color: "black",
+                      color: `${
+                        location.pathname.slice(1) == data.path
+                          ? "white"
+                          : "balck"
+                      }`,
                       // backgroundColor: "#47478C",
                       backgroundColor: `${
                         location.pathname.slice(1) == data.path
-                          ? "#060672"
-                          : "blue"
+                          ? "blue"
+                          : "white"
                       }`,
                     }}
                     index={index}

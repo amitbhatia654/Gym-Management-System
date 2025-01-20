@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router()
-
 const gymController = require('../Controller/gym-controller');
 const AuthMiddleWare = require('../auth-middleware');
 
-router.route('/employee').post(AuthMiddleWare, gymController.AddEmployee)
-router.route('/employee').get(AuthMiddleWare, gymController.getAllEmployee)
+
 router.route('/member').post(AuthMiddleWare, gymController.addMember)
 router.route('/member').get(AuthMiddleWare, gymController.getAllJoinedMembers)
 router.route('/member').put(AuthMiddleWare, gymController.updateMember)

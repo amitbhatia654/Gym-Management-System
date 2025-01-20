@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ContainerPage from "./HelperPages/ContainerPage";
 import { useLocation } from "react-router-dom";
+import { formatDateToDisplay } from "../assets/FrontendCommonFunctions";
 const dp_image = "../../images/user.jpg";
 
 export default function MemberDetailsPage() {
@@ -99,7 +100,13 @@ export default function MemberDetailsPage() {
                       >
                         Name
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd",color:"blue" }}>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          color: "blue",
+                        }}
+                      >
                         {data?.name}
                       </td>
                     </tr>
@@ -142,7 +149,7 @@ export default function MemberDetailsPage() {
                         Date of Joining
                       </td>
                       <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                        {data?.doj}
+                        {formatDateToDisplay(data?.doj)}
                       </td>
                     </tr>
                     <tr>
@@ -167,6 +174,20 @@ export default function MemberDetailsPage() {
                           fontWeight: "bold",
                         }}
                       >
+                        Plan Renew
+                      </td>
+                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        {formatDateToDisplay(data?.PlanRenew)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
                         Next Bill Date
                       </td>
                       <td style={{ padding: "10px", border: "1px solid #ddd" }}>
@@ -175,8 +196,6 @@ export default function MemberDetailsPage() {
                     </tr>
                   </tbody>
                 </table>
-
-                
               </div>
             </div>
           </div>

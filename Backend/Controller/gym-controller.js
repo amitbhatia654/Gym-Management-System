@@ -1,19 +1,6 @@
-const Employee = require("../Models/EmployeeModel")
 const moment = require("moment");
-
-
 const Member = require('../Models/MembersModel')
-const { calculateValidity } = require("../utils/CommonFunctions")
-const AddEmployee = async (req, res) => {
-
-    try {
-        const { empName, empEmail, empPhone, empDepartment, empAddress, _id } = req.body
-        const Res = await Employee.create({ empName, empPhone, empEmail, empDepartment, empAddress, createdBy: _id })
-        res.status(200).send("New Member Added Succesfully")
-    } catch (error) {
-        console.log('Add Employee error', error)
-    }
-}
+const { calculateValidity, getCurrentDate, parseDate } = require("../utils/CommonFunctions")
 
 
 
@@ -21,7 +8,12 @@ const addMember = async (req, res) => {
     try {
 
         const ValidTill = calculateValidity(req.body.doj, parseInt(req.body.memberPlan))
-        const data = { ...req.body, createdBy: req.loginUser._id, ValidTill }
+        let status = ''
+
+        if (getCurrentDate() < parseDate(ValidTill)) status = 'active'
+        else status = 'inactive'
+
+        const data = { ...req.body, createdBy: req.loginUser._id, ValidTill, status, PlanRenew: req.body.doj }
 
         const result = await Member.create(data)
         res.status(200).json({ message: "New Member Added Succesfully", result })
@@ -33,9 +25,19 @@ const addMember = async (req, res) => {
 
 const updateMember = async (req, res) => {
     try {
-        const ValidTill = calculateValidity(req.body.doj, parseInt(req.body.memberPlan))
-        const data = { ...req.body, ValidTill }
+
+        let PlanRenew = req.body.doj;
+        if (req.body.type == 'renew') {
+            PlanRenew = req.body.renewalDate
+        }
+
+        const ValidTill = calculateValidity(PlanRenew, parseInt(req.body.memberPlan))
+        let status = 'inactive'
+        if (getCurrentDate() < parseDate(ValidTill)) status = 'active'
+
+        const data = { ...req.body, ValidTill, status, PlanRenew }
         const result = await Member.findByIdAndUpdate(req.body._id, data, { new: true })
+
         res.status(200).json({ message: "Member updated succesfully", result })
     } catch (error) {
         res.status(205).send("Member Not Updated")
@@ -56,28 +58,7 @@ const deleteMember = async (req, res) => {
     }
 };
 
-// const getAllJoinedMembers = async (req, res) => {
-//     try {
-//         let search = req.query.search
-//         let rowSize = parseInt(req.query.rowSize) || 6;
-//         let page = parseInt(req.query.currentPage) || 1; // Default to page 1
-//         let skip = (page - 1) * rowSize;
-//         const createdBy = req.loginUser._id
-//         const type = req.query.type
 
-//         const query = search
-//             ? { createdBy, name: { $regex: search, $options: "i" } }
-//             : { createdBy };
-
-//         const response = await Member.find(query).skip(skip).limit(rowSize)
-//         const totalCount = await Member.countDocuments(query);
-
-//         res.status(200).json({ response, totalCount })
-
-//     } catch (error) {
-//         res.status(205).send("data not found")
-//     }
-// }
 
 const getAllJoinedMembers = async (req, res) => {
     try {
@@ -131,29 +112,9 @@ const getAllJoinedMembers = async (req, res) => {
 };
 
 
-const getAllEmployee = async (req, res) => {
-    try {
-        let search = req.query.search
-        let rowSize = parseInt(req.query.rowSize) || 6;
-        let page = parseInt(req.query.currentPage) || 1; // Default to page 1
-        let skip = (page - 1) * rowSize;
-        const createdBy = req.query._id
 
-        const query = search
-            ? { createdBy, empName: { $regex: search, $options: "i" } }
-            : { createdBy };
-
-        const response = await Employee.find(query).skip(skip).limit(rowSize)
-        const totalCount = await Employee.countDocuments(query);
-
-        res.status(200).json({ response, totalCount })
-
-    } catch (error) {
-        res.status(205).send("data not found")
-    }
-}
 
 
 module.exports = {
-    AddEmployee, getAllEmployee, addMember, getAllJoinedMembers, updateMember, deleteMember
+    addMember, getAllJoinedMembers, updateMember, deleteMember
 }

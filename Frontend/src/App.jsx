@@ -81,7 +81,7 @@ function App() {
             element={<MemberShipPlans></MemberShipPlans>}
           ></Route>
 
-          <Route path="profile" element={<MyProfile></MyProfile>}></Route>
+          <Route path="gym-profile" element={<MyProfile></MyProfile>}></Route>
           <Route
             path="/add-new-employee"
             element={<CreateEmployeeData />}

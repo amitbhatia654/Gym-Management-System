@@ -42,32 +42,23 @@ export default function InactiveMembers() {
   const handleSubmit = async (values) => {
     // return console.log(values, "form values");
     setloading(true);
+    let type = "renew";
     if (values?.profilePic?.name) {
       const base64 = await convertFileToBase64(values?.profilePic);
-      var data = { ...values, profilePic: base64 };
-    } else data = { ...values };
+      var data = { ...values, profilePic: base64, type };
+    } else data = { ...values, type };
 
-    const res = editMember._id
-      ? await axiosInstance.put(`/api/gym/member`, data)
-      : await axiosInstance.post(`/api/gym/member`, data);
+    const res = await axiosInstance.put(`/api/gym/member`, data);
 
     setloading(false);
     if (res.status == 200) {
-      if (editMember._id) {
-        const updatedMember = allMembers.map((folder) => {
-          if (folder._id == values._id) {
-            return res.data.result;
-          }
-
-          return folder;
-        });
-
-        setAllMembers(updatedMember);
-      }
-      if (allMembers.length < rowSize) allMembers.push(res.data.result);
+      const updatedMembers = allMembers.filter(
+        (member) => member._id !== res.data.result._id
+      );
+      setAllMembers(updatedMembers);
       toast.success(res.data.message);
       setEditMember({});
-      // setShowModal(false);
+      setShowModal(false);
     }
   };
 
@@ -158,7 +149,13 @@ export default function InactiveMembers() {
                           className="member-image"
                         />
 
-                        <div className="fw-bold mt-2"> {member.name}</div>
+                        <div
+                          className="fw-bold mt-2 "
+                          style={{ color: "white" }}
+                        >
+                          {" "}
+                          {member.name}
+                        </div>
                         <div>+91 {member?.phone_number}</div>
                       </div>
                       <span>
@@ -175,7 +172,7 @@ export default function InactiveMembers() {
                             aria-expanded="false"
                           >
                             <h6>
-                              <MoreVertIcon sx={{ fontSize: "19px" }} />
+                              <MoreVertIcon sx={{ fontSize: "19px" ,color:"white"}} />
                             </h6>
                           </button>
                           <ul className="dropdown-menu">
@@ -406,11 +403,41 @@ export default function InactiveMembers() {
                               <label htmlFor="pic">Profile Pic</label>
                               <br />
 
-                              <img
-                                src={props.values?.profilePic}
-                                alt=""
-                                className="pic-form"
-                              />
+                              {props.values.profilePic.name ||
+                              props.values.profilePic == "" ? (
+                                <>
+                                  <input
+                                    type="file"
+                                    className="form-control "
+                                    id="pic"
+                                    name="profilePic"
+                                    onChange={(e) =>
+                                      props.setFieldValue(
+                                        "profilePic",
+                                        e.target.files[0]
+                                      )
+                                    }
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <img
+                                    src={props.values?.profilePic}
+                                    alt=""
+                                    className="pic-form"
+                                  />
+                                  <br />
+                                  <button
+                                    className="common-btn mx-0"
+                                    type="button"
+                                    onClick={() =>
+                                      props.setFieldValue("profilePic", "")
+                                    }
+                                  >
+                                    Change Pic
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>

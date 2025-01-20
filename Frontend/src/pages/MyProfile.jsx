@@ -28,7 +28,7 @@ const MyProfile = () => {
   }, []);
   return (
     <>
-      <ContainerPage title={"My Profile"}>
+      <ContainerPage title={"GYM Profile"}>
         {loading ? (
           <>
             <div

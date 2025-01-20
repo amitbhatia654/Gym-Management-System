@@ -62,7 +62,14 @@ export default function JoinedMembers() {
 
         setAllMembers(updatedMember);
       }
-      if (allMembers.length < rowSize) allMembers.push(res.data.result);
+      if (allMembers.length < rowSize && res.data.result.status == "active")
+        allMembers.push(res.data.result);
+      else {
+        const updatedMembers = allMembers.filter(
+          (member) => member._id !== res.data.result._id
+        );
+        setAllMembers(updatedMembers);
+      }
       toast.success(res.data.message);
       setEditMember({});
       // setShowModal(false);
@@ -165,7 +172,7 @@ export default function JoinedMembers() {
                           className="member-image"
                         />
 
-                        <div className="fw-bold mt-2" style={{ color: "blue" }}>
+                        <div className="fw-bold mt-2" style={{ color: "white" }}>
                           {" "}
                           {member.name}
                         </div>
@@ -182,7 +189,7 @@ export default function JoinedMembers() {
                             aria-expanded="false"
                           >
                             <h6>
-                              <MoreVertIcon sx={{ fontSize: "19px" }} />
+                              <MoreVertIcon sx={{ fontSize: "19px" ,color:"white"}} />
                             </h6>
                           </button>
                           <ul className="dropdown-menu">
@@ -239,7 +246,7 @@ export default function JoinedMembers() {
                     address: "",
                     phone_number: "",
                     doj: "",
-                    memberPlan: "",
+                    memberPlan: 1,
                     profilePic: "",
                   }
             }

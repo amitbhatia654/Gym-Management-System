@@ -19,7 +19,25 @@ const calculateValidity = (startDate, monthsToAdd) => {
 
 };
 
+// to return in format 02-5-2025
+const getCurrentDate = () => {
+    const currentDate = new Date()
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = currentDate.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+
+    const [day1, month1, year1] = formattedDate.split('-');
+    return new Date(`${year1}-${month1}-${day1}`);
+}
+
+function parseDate(dateStr) {
+    const [day, month, year] = dateStr.split('-');
+    return new Date(`${year}-${month}-${day}`); // Convert to YYYY-MM-DD for Date object
+}
 
 
 
-module.exports = { calculateValidity }
+
+
+module.exports = { calculateValidity, getCurrentDate, parseDate }
