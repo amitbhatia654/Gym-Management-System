@@ -14,9 +14,9 @@ const memberSchema = new mongoose.Schema({
     profilePic: { type: String },
     status: { type: String },
     memberPlan: { type: String },
-    PlanRenew: { type: String },
-    ValidTill: { type: String },
-    doj: { type: String },
+    PlanRenew: { type: Date },
+    ValidTill: { type: Date },
+    doj: { type: Date },
     createdBy: { type: String }
 
 }, { timestamps: true });

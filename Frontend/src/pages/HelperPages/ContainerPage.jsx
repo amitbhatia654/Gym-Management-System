@@ -25,14 +25,14 @@ export default function ContainerPage({
           <div className="col-md-3 ">
             {showBackBtn && (
               <button
-                style={{ border: "0px", color: "#47478C" }}
+                style={{ border: "0px", color: "black" }}
                 onClick={() => navigate(-1)}
               >
-                <KeyboardBackspaceIcon></KeyboardBackspaceIcon>
+                <KeyboardBackspaceIcon sx={{fontSize:"30px"}}></KeyboardBackspaceIcon>
               </button>
             )}
             <span
-              className="mx-4"
+              className="mx-3"
               style={{
                 fontSize: "26px",
                 fontWeight: "bold",

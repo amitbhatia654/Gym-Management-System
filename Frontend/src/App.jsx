@@ -16,6 +16,7 @@ import MemberDetailsPage from "./pages/MemberDetailsPage";
 import InactiveMembers from "./pages/InactiveMembers";
 import MemberShipPlans from "./pages/MemberShipPlans";
 import Trainers from "./pages/Trainers";
+import MembersReport from "./pages/dashboard/MembersReport";
 
 function App() {
   const isUserLogin = () => {
@@ -59,6 +60,11 @@ function App() {
           <Route path="users" element={<UserDetails />}></Route>
           <Route path="update-profile" element={<UpdateProfile />}></Route>
           <Route path="employees" element={<Employee />}></Route>
+
+          <Route
+            path="members-report"
+            element={<MembersReport></MembersReport>}
+          ></Route>
           <Route
             path="joined-members"
             element={<JoinedMembers></JoinedMembers>}

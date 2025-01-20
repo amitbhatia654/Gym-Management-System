@@ -86,14 +86,14 @@ export default function MemberDetailsPage() {
                   <tbody>
                     <tr
                       style={{
-                        padding: "10px",
+                        padding: "8px",
                         border: "1px solid #ddd",
                         fontWeight: "bold",
                       }}
                     >
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           // border: "1px solid white",
                           fontWeight: "bold",
                         }}
@@ -102,7 +102,7 @@ export default function MemberDetailsPage() {
                       </td>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           color: "blue",
                         }}
@@ -113,85 +113,85 @@ export default function MemberDetailsPage() {
                     <tr>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           fontWeight: "bold",
                         }}
                       >
                         Phone Number
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                         {data?.phone_number}
                       </td>
                     </tr>
                     <tr>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           fontWeight: "bold",
                         }}
                       >
                         Address
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                         {data?.address}
                       </td>
                     </tr>
                     <tr>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           fontWeight: "bold",
                         }}
                       >
                         Date of Joining
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                         {formatDateToDisplay(data?.doj)}
                       </td>
                     </tr>
                     <tr>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           fontWeight: "bold",
                         }}
                       >
                         Membership Plan
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                         {data?.memberPlan} Month
                       </td>
                     </tr>
                     <tr>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           fontWeight: "bold",
                         }}
                       >
                         Plan Renew
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                         {formatDateToDisplay(data?.PlanRenew)}
                       </td>
                     </tr>
                     <tr>
                       <td
                         style={{
-                          padding: "10px",
+                          padding: "8px",
                           border: "1px solid #ddd",
                           fontWeight: "bold",
                         }}
                       >
                         Next Bill Date
                       </td>
-                      <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                        {data?.ValidTill}
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
+                        {formatDateToDisplay(data?.ValidTill)}
                       </td>
                     </tr>
                   </tbody>

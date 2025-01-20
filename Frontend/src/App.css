@@ -113,16 +113,16 @@ body {
 }
 
 .member-box {
-    /* border: 1px solid black; */
+    border: 1px solid grey;
     height: 250px;
     width: 260px;
     padding: 15px;
     /* box-shadow: 1px 1px 9px 1px grey; */
-    box-shadow: 2px 1px 10px grey;
-    margin: 6px;
-    background-color: #2a2a70;
+    box-shadow: 1px 2px 8px 1px grey;
+    margin: 5px;
+    background-color: rgb(234, 239, 249);
     /* color: rgb(5, 5, 59); */
-    color: white;
+    /* color: white; */
 }
 
 .member-image {
@@ -153,4 +153,41 @@ body {
 .details-ul>li {
     /* font-size: 50px; */
     margin-top: 8px;
+}
+
+.detail-box {
+    /* border: 1px solid black; */
+    height: 150px;
+    width: 300px;
+    margin: 5px;
+    box-shadow: 1px 2px 8px 1px grey;
+    background-color: rgb(234, 234, 234);
+    cursor: pointer;
+
+}
+
+.box1 {
+    border-top: 10px solid;
+    border-color: #2a2a70;
+    color: rgb(11, 11, 196);
+}
+
+
+
+.box2 {
+    border-top: 10px solid;
+    border-color: #2a7039;
+    color: green;
+}
+
+.box3 {
+    border-top: 10px solid;
+    border-color: #baa21a;
+    color: rgb(198, 135, 17);
+}
+
+.box4 {
+    border-top: 10px solid;
+    border-color: #f4200d;
+    color: rgb(201, 8, 8);
 }

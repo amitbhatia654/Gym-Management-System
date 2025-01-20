@@ -16,7 +16,10 @@ import { addMember } from "../assets/FormSchema";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Pagination from "./HelperPages/Pagination";
 import { useNavigate } from "react-router-dom";
-import { formatDateToInput } from "../assets/FrontendCommonFunctions";
+import {
+  formatDateToInput,
+  formatDateToDisplay,
+} from "../assets/FrontendCommonFunctions";
 // import { formatDateToInput } from "../../../Backend/utils/CommonFunctions";
 
 export default function InactiveMembers() {
@@ -79,7 +82,7 @@ export default function InactiveMembers() {
 
   const fetchData = async () => {
     setloading(true);
-    const type = "inactive";
+    const type = "expire";
 
     const res = await axiosInstance.get("/api/gym/member", {
       params: { search, rowSize, currentPage, type },
@@ -151,7 +154,7 @@ export default function InactiveMembers() {
 
                         <div
                           className="fw-bold mt-2 "
-                          style={{ color: "white" }}
+                          style={{ color: "blue" }}
                         >
                           {" "}
                           {member.name}
@@ -162,7 +165,7 @@ export default function InactiveMembers() {
                         Expired on:
                         <span className="text-danger">
                           {" "}
-                          {member?.ValidTill ?? "--"}{" "}
+                          {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
                         </span>
                         <span className="dropdown">
                           <button
@@ -172,7 +175,7 @@ export default function InactiveMembers() {
                             aria-expanded="false"
                           >
                             <h6>
-                              <MoreVertIcon sx={{ fontSize: "19px" ,color:"white"}} />
+                              <MoreVertIcon sx={{ fontSize: "19px" }} />
                             </h6>
                           </button>
                           <ul className="dropdown-menu">
@@ -323,7 +326,11 @@ export default function InactiveMembers() {
                                 disabled
                                 id="joining-date"
                                 name="doj"
-                                value={props.values.doj}
+                                value={
+                                  props.values.doj
+                                    ? formatDateToInput(props.values.doj)
+                                    : ""
+                                }
                                 onChange={(e) => {
                                   props.setFieldValue("doj", e.target.value);
                                 }}
@@ -340,7 +347,6 @@ export default function InactiveMembers() {
                         <div className="row mt-3">
                           <div className="col-md-6">
                             <div className="form-group">
-                              {console.log(props.values, "props")}
                               <label htmlFor="ValidTill">Due Date</label>
                               <input
                                 type="date"
@@ -357,17 +363,18 @@ export default function InactiveMembers() {
                             </div>
 
                             <div className="form-group mt-2">
-                              <label htmlFor="renewalDate">Renewal Date</label>
+                              <label htmlFor="PlanRenew">Renewal Date</label>
 
                               <input
                                 type="date"
                                 className="form-control"
-                                id="renewalDate"
-                                name="renewalDate"
+                                id="PlanRenew"
+                                name="PlanRenew"
                                 // value={props.values.}
+
                                 onChange={(e) => {
                                   props.setFieldValue(
-                                    "renewalDate",
+                                    "PlanRenew",
                                     e.target.value
                                   );
                                 }}

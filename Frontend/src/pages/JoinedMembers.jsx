@@ -16,6 +16,10 @@ import { addMember } from "../assets/FormSchema";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Pagination from "./HelperPages/Pagination";
 import { useNavigate } from "react-router-dom";
+import {
+  formatDateToDisplay,
+  formatDateToInput,
+} from ".././assets/FrontendCommonFunctions";
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
@@ -52,27 +56,33 @@ export default function JoinedMembers() {
     setloading(false);
     if (res.status == 200) {
       if (editMember._id) {
-        const updatedMember = allMembers.map((folder) => {
-          if (folder._id == values._id) {
-            return res.data.result;
-          }
-
-          return folder;
-        });
-
-        setAllMembers(updatedMember);
-      }
-      if (allMembers.length < rowSize && res.data.result.status == "active")
-        allMembers.push(res.data.result);
-      else {
-        const updatedMembers = allMembers.filter(
-          (member) => member._id !== res.data.result._id
-        );
-        setAllMembers(updatedMembers);
+        if (res.data.result.status == "active") {
+          const updatedMember = allMembers.map((folder) => {
+            if (folder._id == values._id) {
+              return res.data.result;
+            }
+            return folder;
+          });
+          setAllMembers(updatedMember);
+        } else {
+          const updatedMembers = allMembers.filter(
+            (member) => member._id !== res.data.result._id
+          );
+          setAllMembers(updatedMembers);
+        }
+      } else {
+        if (allMembers.length < rowSize && res.data.result.status == "active")
+          allMembers.push(res.data.result);
+        else {
+          const updatedMembers = allMembers.filter(
+            (member) => member._id !== res.data.result._id
+          );
+          setAllMembers(updatedMembers);
+        }
       }
       toast.success(res.data.message);
       setEditMember({});
-      // setShowModal(false);
+      setShowModal(false);
     }
   };
 
@@ -93,7 +103,7 @@ export default function JoinedMembers() {
 
   const fetchData = async () => {
     setloading(true);
-    const type = "joined";
+    const type = "active";
 
     const res = await axiosInstance.get("/api/gym/member", {
       params: { search, rowSize, currentPage, type },
@@ -172,7 +182,7 @@ export default function JoinedMembers() {
                           className="member-image"
                         />
 
-                        <div className="fw-bold mt-2" style={{ color: "white" }}>
+                        <div className="fw-bold mt-2" style={{ color: "blue" }}>
                           {" "}
                           {member.name}
                         </div>
@@ -180,7 +190,10 @@ export default function JoinedMembers() {
                       </div>
                       <span>
                         Valid Till :
-                        <span className=""> {member?.ValidTill ?? "--"} </span>
+                        <span className="">
+                          {" "}
+                          {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
+                        </span>
                         <span className="dropdown">
                           <button
                             className="btn "
@@ -189,7 +202,7 @@ export default function JoinedMembers() {
                             aria-expanded="false"
                           >
                             <h6>
-                              <MoreVertIcon sx={{ fontSize: "19px" ,color:"white"}} />
+                              <MoreVertIcon sx={{ fontSize: "19px" }} />
                             </h6>
                           </button>
                           <ul className="dropdown-menu">
@@ -338,7 +351,11 @@ export default function JoinedMembers() {
                                 className="form-control"
                                 id="joining-date"
                                 name="doj"
-                                value={props.values.doj}
+                                value={
+                                  props.values?.doj
+                                    ? formatDateToInput(props.values.doj)
+                                    : ""
+                                }
                                 onChange={(e) => {
                                   props.setFieldValue("doj", e.target.value);
                                 }}
