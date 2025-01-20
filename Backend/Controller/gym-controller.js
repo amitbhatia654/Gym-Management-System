@@ -99,7 +99,6 @@ const getAllJoinedMembers = async (req, res) => {
 
 const getMembersReport = async (req, res) => {
 
-    console.log('it called')
     try {
         let search = req.query.search;
         let rowSize = parseInt(req.query.rowSize) || 8;
@@ -120,11 +119,47 @@ const getMembersReport = async (req, res) => {
             ];
         }
 
-        if (type == "monthlyJoined") {
+        if (type == "joined") {
             const currentMonth = moment().month() + 1; // Get current month (moment months are 0-indexed)
             query["$expr"] = {
                 $eq: [{ $month: "$doj" }, currentMonth] // Match documents where the month of DOJ equals current month
             };
+        }
+
+        else if (type == 'expired') {
+            const currentMonth = moment().month() + 1; // Get current month (moment months are 0-indexed)
+            query["$expr"] = {
+                $eq: [{ $month: "$ValidTill" }, currentMonth] // Match documents where the month of DOJ equals current month
+            };
+        }
+
+        else if (type == 'expireIn3') {
+            const currentDate = moment().startOf('day'); // Start of today, to ignore the time part
+            const threeDaysFromNow = moment().add(3, 'days').endOf('day'); // End of the day, 3 days from today
+
+            query["$expr"] = {
+                $and: [
+                    { $gte: ["$ValidTill", currentDate.toDate()] }, // Match documents where ValidTill is greater than or equal to today
+                    { $lte: ["$ValidTill", threeDaysFromNow.toDate()] } // Match documents where ValidTill is less than or equal to three days from today
+                ]
+            };
+
+            // Add sorting by ValidTill in ascending order
+            // query["$sort"] = { "ValidTill": 1 };
+        }
+
+        else if (type == 'expireIn7') {
+            const currentDate = moment(); // Get the current date
+            const threeDaysFromNow = moment().add(7, 'days'); // Get the date three days from today
+
+            query["$expr"] = {
+                $and: [
+                    { $gte: ["$ValidTill", currentDate.toDate()] }, // Match documents where ValidTill is greater than or equal to today
+                    { $lte: ["$ValidTill", threeDaysFromNow.toDate()] } // Match documents where ValidTill is less than or equal to three days from today
+                ]
+            };
+
+            // query["$sort"] = { "ValidTill": 1 };
         }
         // Fetch members with pagination
         const response = await Member.find(query).skip(skip).limit(rowSize);

@@ -66,7 +66,7 @@ function App() {
             element={<MembersReport></MembersReport>}
           ></Route>
           <Route
-            path="joined-members"
+            path="active-members"
             element={<JoinedMembers></JoinedMembers>}
           ></Route>
 

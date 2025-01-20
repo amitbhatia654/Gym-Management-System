@@ -17,7 +17,7 @@ export default function SideNav({ isOpen }) {
   const user = useSelector((state) => state.cart);
 
   const routes = [
-    { path: "joined-members", logo: <ContactEmergencyIcon />, isAdmin: true },
+    { path: "active-members", logo: <ContactEmergencyIcon />, isAdmin: true },
 
     { path: "Inactive-Members", logo: <GradingIcon />, isAdmin: true },
     { path: "Trainers", logo: <ContactEmergencyIcon />, isAdmin: true },

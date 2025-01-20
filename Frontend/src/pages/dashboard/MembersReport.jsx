@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import toast from "react-hot-toast";
@@ -20,16 +20,22 @@ export default function MembersReport() {
   const [allMembers, setAllMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [rowSize, setRowSize] = useState(6);
+  const [rowSize, setRowSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const location = useLocation();
+
+  const data = location?.state?.type;
+  // console.log(type, "type is ");
+
+  const title = data == "joined" ? "Joined Members" : "Expired Members";
 
   const totalPages = Math.ceil(totalCount / rowSize);
 
   const fetchData = async () => {
-    console.log("it calleddd");
+    // console.log("it calleddd");
     setLoading(true);
-    let type = "monthlyJoined";
+    let type = data;
     const res = await axiosInstance.get("/api/gym/member-report", {
       params: { search, rowSize, currentPage, type },
     });
@@ -51,7 +57,7 @@ export default function MembersReport() {
     <Box>
       <ContainerPage
         showBackBtn="true"
-        title={"Employees "}
+        title={title}
         showSearch={true}
         setSearch={setSearch}
         rowSize={rowSize}

@@ -16,7 +16,9 @@ export default function Main_dashBoard() {
       <div className="d-flex flex-wrap mt-2">
         <div
           className="detail-box d-flex justify-content-center align-items-center box1"
-          onClick={() => navigate("members-report")}
+          onClick={() =>
+            navigate("members-report", { state: { type: "joined" } })
+          }
         >
           <div className="">
             <div className="text-center">
@@ -29,7 +31,9 @@ export default function Main_dashBoard() {
         </div>
         <div
           className="detail-box d-flex justify-content-center align-items-center box2 "
-          onClick={() => navigate("members-report")}
+          onClick={() =>
+            navigate("members-report", { state: { type: "expired" } })
+          }
         >
           <div className="">
             <div className="text-center">
@@ -43,7 +47,9 @@ export default function Main_dashBoard() {
 
         <div
           className="detail-box d-flex justify-content-center align-items-center box3 "
-          onClick={() => navigate("members-report")}
+          onClick={() =>
+            navigate("members-report", { state: { type: "expireIn3" } })
+          }
         >
           <div className="">
             <div className="text-center">
@@ -55,7 +61,9 @@ export default function Main_dashBoard() {
 
         <div
           className="detail-box d-flex justify-content-center align-items-center box4 "
-          onClick={() => navigate("members-report")}
+          onClick={() =>
+            navigate("members-report", { state: { type: "expireIn7" } })
+          }
         >
           <div className="">
             <div className="text-center">
