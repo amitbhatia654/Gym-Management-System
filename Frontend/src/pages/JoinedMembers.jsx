@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "./HelperPages/Modal";
 import { Formik, ErrorMessage, Form } from "formik";
 import axiosInstance from "../ApiManager";
-const dp_image = "../../images/user.jpg";
+const dp_image = "../../user.jpg";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import toast from "react-hot-toast";
 import { addMember } from "../assets/FormSchema";
@@ -21,7 +21,6 @@ import {
   formatDateToInput,
 } from ".././assets/FrontendCommonFunctions";
 import ConfirmModal from "./HelperPages/ConfirmModal";
-console.log(dp_image,'dp image')
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
@@ -120,7 +119,6 @@ export default function JoinedMembers() {
     if (res.status == 200) {
       setAllMembers(res.data.response);
       setTotalCount(res.data.totalCount);
-      console.log(res.data.totalCount, "total count");
     } else {
       setAllMembers([]);
       setTotalCount(0);

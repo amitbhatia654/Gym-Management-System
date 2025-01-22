@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "./HelperPages/Modal";
 import { Formik, ErrorMessage, Form } from "formik";
 import axiosInstance from "../ApiManager";
-const dp_image = "../../images/user.jpg";
+const dp_image = "../../user.jpg";
 import toast from "react-hot-toast";
 import { addMember, renewMember } from "../assets/FormSchema";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
