@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import ContainerPage from "./HelperPages/ContainerPage";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import { formatDateToDisplay } from "../assets/FrontendCommonFunctions";
+import ContainerPage from "../HelperPages/ContainerPage";
+import { formatDateToDisplay } from "../../assets/FrontendCommonFunctions";
 const dp_image = "/images/user.jpg";
 
-export default function MemberDetailsPage() {
+export default function TrainersDetailsPage() {
   const location = useLocation();
   const { data } = location.state;
 
   return (
     <>
-      <ContainerPage title={"Member Details"} showBackBtn="true">
+      <ContainerPage title={"Trainer Details"} showBackBtn="true">
         {false ? (
           <>
             <div
@@ -21,12 +21,8 @@ export default function MemberDetailsPage() {
             </div>
           </>
         ) : (
-          <div
-            className="container mt-4 p-4  "
-            // style={{ boxShadow: " inset 0px 1px 3px grey", height: "50vh" }}
-          >
+          <div className="container mt-4 p-4  ">
             <div className="row">
-              {/* <div className="col-md-1"></div> */}
               <div className="col-md-3 px-4">
                 <img
                   src={data?.profilePic || dp_image}
@@ -34,55 +30,16 @@ export default function MemberDetailsPage() {
                   height={"280px"}
                   width={"280px"}
                   style={{
-                    // borderRadius: "50%",
                     boxShadow: " 2px 1px 10px grey",
                   }}
                 />
               </div>
-              <div
-                className="col-md-8  "
-                // style={{ boxShadow: " 2px 1px 5px grey" }}
-              >
-                {/* <table>
-                  <tr>
-                    <thead>Name </thead>
-                    <td>{data?.name}</td>
-                  </tr>
-                  <tr>
-                    <thead>Phone Number </thead>
-                    <td>{data?.phone_number}</td>
-                  </tr>
-                  <tr>
-                    <thead>Address </thead>
-                    <td>{data?.address}</td>
-                  </tr>
-                  <tr>
-                    <thead>Date of Joining </thead>
-                    <td>{data?.doj}</td>
-                  </tr>
-
-                  <tr>
-                    <thead>Membership Plan </thead>
-                    <td>{data?.memberPlan}</td>
-                  </tr>
-
-                  <tr>
-                    <thead>Next Bill Date </thead>
-                    <td>{data?.ValidTill}</td>
-                  </tr>
-                </table> */}
-
+              <div className="col-md-8  ">
                 <table
                   style={{
                     width: "100%",
-                    // borderCollapse: "collapse",
-                    // border:"2px solid grey"
-                    // margin: "20px 0",
-                    // backgroundColor: "#f4f4f4",
                   }}
-                  // style={{}}
                 >
-                  <thead></thead>
                   <tbody>
                     <tr
                       style={{
@@ -94,7 +51,6 @@ export default function MemberDetailsPage() {
                       <td
                         style={{
                           padding: "8px",
-                          // border: "1px solid white",
                           fontWeight: "bold",
                         }}
                       >
@@ -108,6 +64,36 @@ export default function MemberDetailsPage() {
                         }}
                       >
                         {data?.name}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        style={{
+                          padding: "8px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Gender
+                      </td>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
+                        {data?.gender}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        style={{
+                          padding: "8px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Address{" "}
+                      </td>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
+                        {data?.address}
                       </td>
                     </tr>
                     <tr>
@@ -124,6 +110,7 @@ export default function MemberDetailsPage() {
                         {data?.phone_number}
                       </td>
                     </tr>
+
                     <tr>
                       <td
                         style={{
@@ -132,12 +119,13 @@ export default function MemberDetailsPage() {
                           fontWeight: "bold",
                         }}
                       >
-                        Address
+                        Emergency Number
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {data?.address}
+                        {data?.emergency_number}
                       </td>
                     </tr>
+
                     <tr>
                       <td
                         style={{
@@ -152,6 +140,7 @@ export default function MemberDetailsPage() {
                         {formatDateToDisplay(data?.doj)}
                       </td>
                     </tr>
+
                     <tr>
                       <td
                         style={{
@@ -160,10 +149,10 @@ export default function MemberDetailsPage() {
                           fontWeight: "bold",
                         }}
                       >
-                        Membership Plan
+                        Training Experience
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {data?.memberPlan} Month
+                        {data?.training_exp} Year
                       </td>
                     </tr>
                     <tr>
@@ -174,10 +163,10 @@ export default function MemberDetailsPage() {
                           fontWeight: "bold",
                         }}
                       >
-                        Plan Renew
+                        Shift & Timings{" "}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {formatDateToDisplay(data?.PlanRenew)}
+                        {data?.shift_timings} Month
                       </td>
                     </tr>
                     <tr>
@@ -188,10 +177,10 @@ export default function MemberDetailsPage() {
                           fontWeight: "bold",
                         }}
                       >
-                        Next Bill Date
+                        Specialization{" "}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {formatDateToDisplay(data?.ValidTill)}
+                        {data?.specialization}
                       </td>
                     </tr>
                   </tbody>

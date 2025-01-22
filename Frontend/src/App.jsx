@@ -17,6 +17,7 @@ import InactiveMembers from "./pages/InactiveMembers";
 import MemberShipPlans from "./pages/MemberShipPlans";
 import Trainers from "./pages/Trainers";
 import MembersReport from "./pages/dashboard/MembersReport";
+import TrainersDetailsPage from "./pages/Trainers/TrainersDetails";
 
 function App() {
   const isUserLogin = () => {
@@ -80,7 +81,12 @@ function App() {
             element={<MemberDetailsPage></MemberDetailsPage>}
           ></Route>
 
-          <Route path="trainers" element={<Trainers></Trainers>}></Route>
+          <Route path="trainers" element={<Trainers />}></Route>
+
+          <Route
+            path="trainer-details"
+            element={<TrainersDetailsPage />}
+          ></Route>
 
           <Route
             path="membership-plans"

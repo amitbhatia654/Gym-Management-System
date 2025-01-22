@@ -19,7 +19,7 @@ export default function Employee() {
   const [allemployee, setAllEmployee] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [rowSize, setRowSize] = useState(6);
+  const [rowSize, setRowSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 

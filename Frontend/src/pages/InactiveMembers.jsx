@@ -496,7 +496,11 @@ export default function InactiveMembers() {
                           }}
                           disabled={submitLoading}
                         >
-                          {submitLoading ? "saving please wait" : "Submit"}
+                          {submitLoading ? (
+                            <span className="spinner-border "></span>
+                          ) : (
+                            "Submit"
+                          )}
                         </Button>
                       </div>
                     </div>

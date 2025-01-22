@@ -20,15 +20,17 @@ export default function ContainerPage({
   const navigate = useNavigate();
   return (
     <div>
-      <div className="container-fluid" style={{ padding: "0px" }}>
+      <div className="container-fluid position-sticky top-0  container-header">
         <div className="row">
-          <div className="col-md-3 ">
+          <div className="col-md-4 ">
             {showBackBtn && (
               <button
                 style={{ border: "0px", color: "black" }}
                 onClick={() => navigate(-1)}
               >
-                <KeyboardBackspaceIcon sx={{fontSize:"30px"}}></KeyboardBackspaceIcon>
+                <KeyboardBackspaceIcon
+                  sx={{ fontSize: "30px" }}
+                ></KeyboardBackspaceIcon>
               </button>
             )}
             <span
@@ -42,7 +44,7 @@ export default function ContainerPage({
               {title}
             </span>
           </div>
-          <div className="col-md-9 d-flex justify-content-end">
+          <div className="col-md-8 d-flex justify-content-end">
             {showSearch && (
               <TextField
                 type="text"
@@ -63,16 +65,10 @@ export default function ContainerPage({
           </div>
         </div>
       </div>
-      <div
-        className=""
-        style={{
-          boxShadow: "0px 5px 8px rgba(0, 0, 0, 0.2)",
-          minHeight: "76vh",
-        }}
-      >
+      <div className="">
         <div
           className="d-flex flex-column justify-content-between mt-2 "
-          style={{ height: "76vh" }}
+          style={{ height: "83vh" }}
         >
           {children}
           {rowSize && (

@@ -186,33 +186,14 @@ export default function Index() {
             style={{
               minHeight: "91vh",
               maxHeight: "91vh",
-              padding: "2px",
               paddingLeft: "14px",
               paddingRight: "14px",
-              // boxShadow: " inset  0px 0px 2px 1px grey",
-              // border:"1px solid black"
-              // borderRadius: "10px",
-              // margin: "5px",
             }}
           >
             <Outlet></Outlet>
           </div>
         </div>
       </div>
-      {/* <div
-        style={{
-          border: "1px solid #d6d4d4",
-          paddingTop: "6px",
-        }}
-      >
-        <h6
-          className="text-center  "
-          style={{ color: "#47478C", fontSize: "14px" }}
-        >
-          © Copyright {userData?.name?.toUpperCase() ?? "Gym"} 2025. All rights
-          reserved.
-        </h6>
-      </div> */}
     </>
   );
 }
