@@ -63,7 +63,7 @@ export default function Pagination({
                 backgroundColor: "white",
                 fontSize: "12px",
               }}
-              disabled={currentPage === totalPages}
+              disabled={currentPage >= totalPages}
             >
               {"Next >"}
             </Button>

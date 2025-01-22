@@ -20,10 +20,12 @@ import {
   formatDateToDisplay,
   formatDateToInput,
 } from ".././assets/FrontendCommonFunctions";
+import ConfirmModal from "./HelperPages/ConfirmModal";
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setloading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [editMember, setEditMember] = useState({});
   const [search, setSearch] = useState("");
   const [rowSize, setRowSize] = useState(8);
@@ -31,6 +33,10 @@ export default function JoinedMembers() {
   const [totalCount, setTotalCount] = useState(0);
   const [allMembers, setAllMembers] = useState([]);
   const totalPages = Math.ceil(totalCount / rowSize);
+  const [confirmModalData, setConfirmModalData] = useState({
+    open: false,
+    answer: "",
+  });
   const navigate = useNavigate();
   function convertFileToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -43,7 +49,7 @@ export default function JoinedMembers() {
 
   const handleSubmit = async (values) => {
     // return console.log(values, "form values");
-    setloading(true);
+    setSubmitLoading(true);
     if (values?.profilePic?.name) {
       const base64 = await convertFileToBase64(values?.profilePic);
       var data = { ...values, profilePic: base64 };
@@ -53,7 +59,7 @@ export default function JoinedMembers() {
       ? await axiosInstance.put(`/api/gym/member`, data)
       : await axiosInstance.post(`/api/gym/member`, data);
 
-    setloading(false);
+    setSubmitLoading(false);
     if (res.status == 200) {
       if (editMember._id) {
         if (res.data.result.status == "active") {
@@ -88,6 +94,8 @@ export default function JoinedMembers() {
 
   const deleteMember = async (memberId) => {
     // console.log(memberId);
+    const userResponse = await showConfirmationModal();
+    if (userResponse != "yes") return;
     const res = await axiosInstance.delete(`/api/gym/member`, {
       data: { memberId },
     });
@@ -111,6 +119,7 @@ export default function JoinedMembers() {
     if (res.status == 200) {
       setAllMembers(res.data.response);
       setTotalCount(res.data.totalCount);
+      console.log(res.data.totalCount, "total count");
     } else {
       setAllMembers([]);
       setTotalCount(0);
@@ -121,6 +130,17 @@ export default function JoinedMembers() {
   useEffect(() => {
     fetchData();
   }, [search, rowSize, currentPage]);
+
+  const showConfirmationModal = () => {
+    return new Promise((resolve) => {
+      setConfirmModalData({
+        open: true,
+        onClose: (answer) => {
+          resolve(answer);
+        },
+      });
+    });
+  };
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -133,7 +153,7 @@ export default function JoinedMembers() {
               color: "#47478C",
             }}
           >
-            Joined Members
+            Active Members
           </span>
         </div>
         <div>
@@ -164,73 +184,91 @@ export default function JoinedMembers() {
           style={{ minHeight: "74vh", maxHeight: "74vh" }}
         >
           <div className="d-flex flex-wrap mt-1">
-            {allMembers.length > 0
-              ? allMembers.map((member, id) => {
-                  return (
-                    <div className=" member-box text-center " key={id}>
-                      <div
-                        onClick={() =>
-                          navigate("/member-details", {
-                            state: { data: member },
-                          })
-                        }
-                        className="member"
-                      >
-                        <img
-                          src={member.profilePic ? member.profilePic : dp_image}
-                          alt=""
-                          className="member-image"
-                        />
+            {loading ? (
+              <>
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ minHeight: "70vh", minWidth: "80vw" }}
+                >
+                  <div className="loader"></div>
+                </div>
+              </>
+            ) : allMembers.length > 0 ? (
+              allMembers.map((member, id) => {
+                return (
+                  <div className=" member-box text-center " key={id}>
+                    <div
+                      onClick={() =>
+                        navigate("/member-details", {
+                          state: { data: member },
+                        })
+                      }
+                      className="member"
+                    >
+                      <img
+                        src={member.profilePic ? member.profilePic : dp_image}
+                        alt=""
+                        className="member-image"
+                      />
 
-                        <div className="fw-bold mt-2" style={{ color: "blue" }}>
-                          {" "}
-                          {member.name}
-                        </div>
-                        <div>+91 {member?.phone_number}</div>
+                      <div className="fw-bold mt-2" style={{ color: "blue" }}>
+                        {" "}
+                        {member.name}
                       </div>
-                      <span>
-                        Valid Till :
-                        <span className="">
-                          {" "}
-                          {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
-                        </span>
-                        <span className="dropdown">
-                          <button
-                            className="btn "
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <h6>
-                              <MoreVertIcon sx={{ fontSize: "19px" }} />
-                            </h6>
-                          </button>
-                          <ul className="dropdown-menu">
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() => {
-                                  setEditMember(member), setShowModal(true);
-                                }}
-                              >
-                                Edit
-                              </button>
-                            </li>
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() => deleteMember(member._id)}
-                              >
-                                Delete
-                              </button>
-                            </li>
-                          </ul>
-                        </span>
-                      </span>
+                      <div>+91 {member?.phone_number}</div>
                     </div>
-                  );
-                })
-              : "No Member Added Yet"}
+                    <span>
+                      Valid Till :
+                      <span className="">
+                        {" "}
+                        {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
+                      </span>
+                      <span className="dropdown">
+                        <button
+                          className="btn "
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <h6>
+                            <MoreVertIcon sx={{ fontSize: "19px" }} />
+                          </h6>
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              onClick={() => {
+                                setEditMember(member), setShowModal(true);
+                              }}
+                            >
+                              Edit
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              onClick={() => deleteMember(member._id)}
+                            >
+                              Delete
+                            </button>
+                          </li>
+                        </ul>
+                      </span>
+                    </span>
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ minHeight: "70vh", minWidth: "80vw" }}
+                >
+                  <h5 className="text-primary">No Members Found !</h5>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -450,9 +488,9 @@ export default function JoinedMembers() {
                             backgroundColor: "white",
                             fontSize: "16px",
                           }}
-                          disabled={loading}
+                          disabled={submitLoading}
                         >
-                          Submit
+                          {submitLoading ? "saving please wait" : "submit"}{" "}
                         </Button>
                       </div>
                     </div>
@@ -462,6 +500,14 @@ export default function JoinedMembers() {
             )}
           </Formik>
         </Modal>
+      )}
+
+      {confirmModalData.open && (
+        <ConfirmModal
+          title={"Are You Sure You Want to Delete"}
+          setConfirmModalData={setConfirmModalData}
+          onClose={confirmModalData.onClose}
+        ></ConfirmModal>
       )}
     </>
   );

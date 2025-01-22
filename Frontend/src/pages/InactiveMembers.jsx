@@ -1,18 +1,11 @@
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Modal from "./HelperPages/Modal";
 import { Formik, ErrorMessage, Form } from "formik";
 import axiosInstance from "../ApiManager";
 const dp_image = "../../images/user.jpg";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import toast from "react-hot-toast";
-import { addMember } from "../assets/FormSchema";
+import { addMember, renewMember } from "../assets/FormSchema";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Pagination from "./HelperPages/Pagination";
 import { useNavigate } from "react-router-dom";
@@ -20,19 +13,27 @@ import {
   formatDateToInput,
   formatDateToDisplay,
 } from "../assets/FrontendCommonFunctions";
-// import { formatDateToInput } from "../../../Backend/utils/CommonFunctions";
+import ConfirmModal from "./HelperPages/ConfirmModal";
 
 export default function InactiveMembers() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setloading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
   const [editMember, setEditMember] = useState({});
   const [search, setSearch] = useState("");
   const [rowSize, setRowSize] = useState(8);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [allMembers, setAllMembers] = useState([]);
   const totalPages = Math.ceil(totalCount / rowSize);
+
+  const [confirmModalData, setConfirmModalData] = useState({
+    open: false,
+    answer: "",
+  });
   const navigate = useNavigate();
+
   function convertFileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -44,7 +45,7 @@ export default function InactiveMembers() {
 
   const handleSubmit = async (values) => {
     // return console.log(values, "form values");
-    setloading(true);
+    setSubmitLoading(true);
     let type = "renew";
     if (values?.profilePic?.name) {
       const base64 = await convertFileToBase64(values?.profilePic);
@@ -53,7 +54,7 @@ export default function InactiveMembers() {
 
     const res = await axiosInstance.put(`/api/gym/member`, data);
 
-    setloading(false);
+    setSubmitLoading(false);
     if (res.status == 200) {
       const updatedMembers = allMembers.filter(
         (member) => member._id !== res.data.result._id
@@ -66,7 +67,8 @@ export default function InactiveMembers() {
   };
 
   const deleteMember = async (memberId) => {
-    // console.log(memberId);
+    const userResponse = await showConfirmationModal();
+    if (userResponse != "yes") return;
     const res = await axiosInstance.delete(`/api/gym/member`, {
       data: { memberId },
     });
@@ -100,6 +102,17 @@ export default function InactiveMembers() {
   useEffect(() => {
     fetchData();
   }, [search, rowSize, currentPage]);
+
+  const showConfirmationModal = () => {
+    return new Promise((resolve) => {
+      setConfirmModalData({
+        open: true,
+        onClose: (answer) => {
+          resolve(answer);
+        },
+      });
+    });
+  };
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -134,76 +147,91 @@ export default function InactiveMembers() {
           style={{ minHeight: "74vh", maxHeight: "74vh" }}
         >
           <div className="d-flex flex-wrap mt-1">
-            {allMembers.length > 0
-              ? allMembers.map((member, id) => {
-                  return (
-                    <div className=" member-box text-center " key={id}>
-                      <div
-                        onClick={() =>
-                          navigate("/member-details", {
-                            state: { data: member },
-                          })
-                        }
-                        className="member"
-                      >
-                        <img
-                          src={member.profilePic ? member.profilePic : dp_image}
-                          alt=""
-                          className="member-image"
-                        />
+            {loading ? (
+              <>
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ minHeight: "70vh", minWidth: "80vw" }}
+                >
+                  <div className="loader"></div>
+                </div>
+              </>
+            ) : allMembers.length > 0 ? (
+              allMembers.map((member, id) => {
+                return (
+                  <div className=" member-box text-center " key={id}>
+                    <div
+                      onClick={() =>
+                        navigate("/member-details", {
+                          state: { data: member },
+                        })
+                      }
+                      className="member"
+                    >
+                      <img
+                        src={member.profilePic ? member.profilePic : dp_image}
+                        alt=""
+                        className="member-image"
+                      />
 
-                        <div
-                          className="fw-bold mt-2 "
-                          style={{ color: "blue" }}
-                        >
-                          {" "}
-                          {member.name}
-                        </div>
-                        <div>+91 {member?.phone_number}</div>
+                      <div className="fw-bold mt-2 " style={{ color: "blue" }}>
+                        {" "}
+                        {member.name}
                       </div>
-                      <span>
-                        Expired on:
-                        <span className="text-danger">
-                          {" "}
-                          {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
-                        </span>
-                        <span className="dropdown">
-                          <button
-                            className="btn "
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <h6>
-                              <MoreVertIcon sx={{ fontSize: "19px" }} />
-                            </h6>
-                          </button>
-                          <ul className="dropdown-menu">
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() => {
-                                  setEditMember(member), setShowModal(true);
-                                }}
-                              >
-                                Renew Plan
-                              </button>
-                            </li>
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() => deleteMember(member._id)}
-                              >
-                                Delete
-                              </button>
-                            </li>
-                          </ul>
-                        </span>
-                      </span>
+                      <div>+91 {member?.phone_number}</div>
                     </div>
-                  );
-                })
-              : "No Member Added Yet"}
+                    <span>
+                      Expired on:
+                      <span className="text-danger">
+                        {" "}
+                        {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
+                      </span>
+                      <span className="dropdown">
+                        <button
+                          className="btn "
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <h6>
+                            <MoreVertIcon sx={{ fontSize: "19px" }} />
+                          </h6>
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              onClick={() => {
+                                setEditMember(member), setShowModal(true);
+                              }}
+                            >
+                              Renew Plan
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              onClick={() => deleteMember(member._id)}
+                            >
+                              Delete
+                            </button>
+                          </li>
+                        </ul>
+                      </span>
+                    </span>
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ minHeight: "70vh", minWidth: "80vw" }}
+                >
+                  <h5 className="text-primary">No Members Found !</h5>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -226,7 +254,7 @@ export default function InactiveMembers() {
           <Formik
             initialValues={
               editMember._id
-                ? editMember
+                ? { ...editMember, PlanRenew: "" }
                 : {
                     name: "",
                     address: "",
@@ -236,7 +264,7 @@ export default function InactiveMembers() {
                     profilePic: "",
                   }
             }
-            // validationSchema={addMember}
+            validationSchema={renewMember}
             enableReinitialize={true}
             onSubmit={(values) => handleSubmit(values)}
           >
@@ -379,6 +407,12 @@ export default function InactiveMembers() {
                                   );
                                 }}
                               />
+                              {console.log(props.errors, "the meessage")}
+                              <ErrorMessage
+                                name="PlanRenew"
+                                component="div"
+                                style={{ color: "red" }}
+                              />
                             </div>
 
                             <div className="form-group mt-2">
@@ -460,9 +494,9 @@ export default function InactiveMembers() {
                             backgroundColor: "white",
                             fontSize: "16px",
                           }}
-                          disabled={loading}
+                          disabled={submitLoading}
                         >
-                          Submit
+                          {submitLoading ? "saving please wait" : "Submit"}
                         </Button>
                       </div>
                     </div>
@@ -472,6 +506,14 @@ export default function InactiveMembers() {
             )}
           </Formik>
         </Modal>
+      )}
+
+      {confirmModalData.open && (
+        <ConfirmModal
+          title={"Are You Sure You Want to Delete"}
+          setConfirmModalData={setConfirmModalData}
+          onClose={confirmModalData.onClose}
+        ></ConfirmModal>
       )}
     </>
   );
