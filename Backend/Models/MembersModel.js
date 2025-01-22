@@ -15,7 +15,7 @@ const memberSchema = new mongoose.Schema({
     profilePic: { type: String },
     status: { type: String },
     doj: { type: Date },
-    trainer: {
+    assigned_trainer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Trainer'  // Reference the Trainer collection
     },

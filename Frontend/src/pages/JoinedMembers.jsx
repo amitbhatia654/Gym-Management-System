@@ -50,7 +50,6 @@ export default function JoinedMembers() {
   }
 
   const handleSubmit = async (values) => {
-    return console.log(values, "form values");
     setSubmitLoading(true);
     if (values?.profilePic?.name) {
       const base64 = await convertFileToBase64(values?.profilePic);
@@ -62,28 +61,32 @@ export default function JoinedMembers() {
       : await axiosInstance.post(`/api/gym/member`, data);
 
     setSubmitLoading(false);
+    console.log(res, "api resonpse");
     if (res.status == 200) {
       if (editMember._id) {
-        if (res.data.result.status == "active") {
+        if (res.data.memberResult.status == "active") {
           const updatedMember = allMembers.map((folder) => {
             if (folder._id == values._id) {
-              return res.data.result;
+              return res.data.memberResult;
             }
             return folder;
           });
           setAllMembers(updatedMember);
         } else {
           const updatedMembers = allMembers.filter(
-            (member) => member._id !== res.data.result._id
+            (member) => member._id !== res.data.memberResult._id
           );
           setAllMembers(updatedMembers);
         }
       } else {
-        if (allMembers.length < rowSize && res.data.result.status == "active")
-          allMembers.push(res.data.result);
+        if (
+          allMembers.length < rowSize &&
+          res.data.memberResult.status == "active"
+        )
+          allMembers.push(res.data.memberResult);
         else {
           const updatedMembers = allMembers.filter(
-            (member) => member._id !== res.data.result._id
+            (member) => member._id !== res.data.memberResult._id
           );
           setAllMembers(updatedMembers);
         }
@@ -194,10 +197,10 @@ export default function JoinedMembers() {
           </button>
         </div>
       </div>
-      <div className="container">
+      <div className="">
         <div
           className="scrollable-container"
-          style={{ minHeight: "74vh", maxHeight: "74vh" }}
+          style={{ minHeight: "75.5vh", maxHeight: "75.5vh" }}
         >
           <div className="d-flex flex-wrap mt-1">
             {loading ? (
@@ -237,7 +240,7 @@ export default function JoinedMembers() {
                       Valid Till :
                       <span className="">
                         {" "}
-                        {formatDateToDisplay(member?.ValidTill) ?? "--"}{" "}
+                        {formatDateToDisplay(member?.validTill) ?? "--"}{" "}
                       </span>
                       <span className="dropdown">
                         <button
@@ -281,7 +284,7 @@ export default function JoinedMembers() {
                   className="d-flex justify-content-center align-items-center"
                   style={{ minHeight: "70vh", minWidth: "80vw" }}
                 >
-                  <h5 className="text-primary">No Members Found !</h5>
+                  <h5 style={{ color: "#47478C" }}>No Members Found !</h5>
                 </div>
               </>
             )}
@@ -560,8 +563,8 @@ export default function JoinedMembers() {
                               props.setFieldValue("paymentMode", e.target.value)
                             } // Update state
                           >
-                            <option value={1}>Cash</option>
-                            <option value={2}>Online</option>
+                            <option value={"cash"}>Cash</option>
+                            <option value={"online"}>Online</option>
                           </select>
                         </div>
                       </div>

@@ -48,8 +48,6 @@ export default function SideNav({ isOpen }) {
                 p: 1,
                 boxShadow: "0px 8px 18px rgba(158, 149, 149, 0.3)",
                 borderRadius: "8px",
-                color: "white",
-                // backgroundColor: "#47478C",
                 color: `${location.pathname == "/" ? "white" : "black"}`,
               }}
               backgroundColor={`${

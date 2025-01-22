@@ -8,8 +8,9 @@ const PaymentSchema = new mongoose.Schema({
     },
     paymentMode: { type: String },
     memberPlan: { type: String },
-    PlanRenew: { type: Date },
-    ValidTill: { type: Date },
+    planRenew: { type: Date },
+    validTill: { type: Date },
+    createdBy: { type: String }
 
 }, { timestamps: true });
 

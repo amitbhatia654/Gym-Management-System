@@ -9,7 +9,7 @@ export default function Pagination({
 }) {
   return (
     <>
-      <div className="container-fluid">
+      <div className="container-fluid ">
         <div
           className="row "
           style={
@@ -19,7 +19,7 @@ export default function Pagination({
             }
           }
         >
-          <div className="col-md-6 mx-auto d-flex  flex-sm-row align-items-center justify-content-center py-1 ">
+          <div className="col-md-6 mx-auto d-flex  flex-sm-row align-items-center justify-content-center  ">
             <span className="">Rows Per Page</span>
 
             <TextField
@@ -70,56 +70,6 @@ export default function Pagination({
           </div>
         </div>
       </div>
-
-      {/* <div className="d-flex justify-content-center   ">
-        <span className="m-3">Rows Per Page</span>
-        <TextField
-          select
-          value={rowSize}
-          onChange={(e) => setRowSize(e.target.value)}
-          variant="outlined"
-          size="small"
-          sx={{ mt: 1, mx: 2 }}
-        >
-          <MenuItem value="6">6</MenuItem>
-          <MenuItem value="12">12</MenuItem>
-          <MenuItem value="18">18</MenuItem>
-        </TextField>
-
-        <Button
-          variant="outlined"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          sx={{
-            my: 1,
-            color: "blue",
-            backgroundColor: "white",
-            fontSize: "13px",
-          }}
-          disabled={currentPage === 1}
-        >
-          {"< prev"}
-        </Button>
-
-        <span className="m-3">
-          Page {currentPage} of {totalPages}
-        </span>
-
-        <Button
-          variant="outlined"
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          sx={{
-            my: 1,
-            color: "blue",
-            backgroundColor: "white",
-            fontSize: "13px",
-          }}
-          disabled={currentPage === totalPages}
-        >
-          {"Next >"}
-        </Button>
-      </div> */}
     </>
   );
 }

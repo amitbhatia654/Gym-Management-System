@@ -2,18 +2,43 @@ const moment = require("moment");
 const Member = require('../Models/MembersModel')
 const { calculateValidity } = require("../utils/CommonFunctions");
 const Trainer = require("../Models/TrainerModel");
+const Payment = require("../Models/PaymentsModel");
 
 
 const addMember = async (req, res) => {
-    try {
-        const ValidTill = calculateValidity(req.body.doj, parseInt(req.body.memberPlan))
-        let status = 'expire'
-        const currentDate = new Date()
-        if (currentDate < ValidTill) status = 'active'
-        const data = { ...req.body, createdBy: req.loginUser._id, ValidTill, status, PlanRenew: req.body.doj }
 
-        const result = await Member.create(data)
-        res.status(200).json({ message: "New Member Added Succesfully", result })
+    try {
+        let status = 'active'
+        const validTill = calculateValidity(req.body.planRenew, parseInt(req.body.memberPlan))
+        const currentDate = new Date()
+        if (validTill < currentDate) status = "inactive"
+
+        const paymentData = {
+            memberPlan: req.body.memberPlan,
+            planRenew: req.body.planRenew,
+            validTill,
+            paymentMode: req.body.paymentMode,
+            createdBy: req.loginUser._id,
+        }
+
+        const paymentResult = await Payment.create(paymentData)
+        const memberData = {
+            name: req.body.name,
+            address: req.body.address,
+            gender: req.body.gender,
+            status,
+            phone_number: req.body.phone_number,
+            emergency_number: req.body.emergency_number,
+            doj: req.body.doj,
+            assigned_trainer: req.body.assigned_trainer,
+            profilePic: req.body.profilePic,
+            createdBy: req.loginUser._id,
+            lastPayment: paymentResult._id
+        }
+
+        const memberResult = await Member.create(memberData)
+        Payment.findByIdAndUpdate(paymentResult._id, { memberId: memberResult._id }, { new: true })
+        res.status(200).json({ message: "New Member Added Succesfully", memberResult })
     } catch (error) {
         res.status(400).send("Some Error Occured")
         console.log('New Member error', error)
