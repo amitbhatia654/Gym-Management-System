@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "./HelperPages/Modal";
 import { Formik, ErrorMessage, Form } from "formik";
 import axiosInstance from "../ApiManager";
-const dp_image = "../../user.jpg";
+const dp_image = "/user.jpg";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import toast from "react-hot-toast";
 import { addMember } from "../assets/FormSchema";
