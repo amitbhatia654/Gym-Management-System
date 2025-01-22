@@ -21,6 +21,7 @@ import {
   formatDateToInput,
 } from ".././assets/FrontendCommonFunctions";
 import ConfirmModal from "./HelperPages/ConfirmModal";
+console.log(dp_image,'dp image')
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
