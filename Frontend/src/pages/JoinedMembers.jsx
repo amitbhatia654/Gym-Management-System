@@ -21,6 +21,7 @@ import {
   formatDateToInput,
 } from ".././assets/FrontendCommonFunctions";
 import ConfirmModal from "./HelperPages/ConfirmModal";
+import moment from "moment";
 
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
@@ -50,18 +51,27 @@ export default function JoinedMembers() {
   }
 
   const handleSubmit = async (values) => {
+    // return console.log(values, "values");
     setSubmitLoading(true);
+
+    var data = {
+      ...values,
+      planRenew: moment(values.planRenew).format(),
+      doj: moment(values.doj).format(),
+    };
+
+    if (editMember._id) data.type = "edit";
     if (values?.profilePic?.name) {
       const base64 = await convertFileToBase64(values?.profilePic);
-      var data = { ...values, profilePic: base64 };
-    } else data = { ...values };
+      data.profilePic = base64;
+    }
+
 
     const res = editMember._id
       ? await axiosInstance.put(`/api/gym/member`, data)
       : await axiosInstance.post(`/api/gym/member`, data);
 
     setSubmitLoading(false);
-    console.log(res, "api resonpse");
     if (res.status == 200) {
       if (editMember._id) {
         if (res.data.memberResult.status == "active") {
@@ -121,6 +131,7 @@ export default function JoinedMembers() {
     const res = await axiosInstance.get("/api/gym/member", {
       params: { search, rowSize, currentPage, type },
     });
+    console.log(res.data.response, "api response is");
     if (res.status == 200) {
       setAllMembers(res.data.response);
       setTotalCount(res.data.totalCount);
@@ -240,7 +251,8 @@ export default function JoinedMembers() {
                       Valid Till :
                       <span className="">
                         {" "}
-                        {formatDateToDisplay(member?.validTill) ?? "--"}{" "}
+                        {formatDateToDisplay(member?.lastPayment.validTill) ??
+                          "--"}{" "}
                       </span>
                       <span className="dropdown">
                         <button
@@ -310,7 +322,13 @@ export default function JoinedMembers() {
           <Formik
             initialValues={
               editMember._id
-                ? editMember
+                ? {
+                    ...editMember,
+                    planRenew: editMember.lastPayment.planRenew,
+                    paymentMode: editMember.lastPayment.paymentMode,
+                    memberPlan: editMember.lastPayment.memberPlan,
+                    assigned_trainer: editMember?.assigned_trainer?._id,
+                  }
                 : {
                     name: "",
                     address: "",
@@ -463,10 +481,7 @@ export default function JoinedMembers() {
                                 : ""
                             }
                             onChange={(e) => {
-                              props.setFieldValue(
-                                "doj",
-                                new Date(e.target.value)
-                              );
+                              props.setFieldValue("doj", e.target.value);
                             }}
                           />
                         </div>
@@ -525,22 +540,19 @@ export default function JoinedMembers() {
 
                       <div className="col-md-6 mt-3">
                         <div className="form-group">
-                          <label htmlFor="joining-date">Plan starts</label>
+                          <label htmlFor="planRenew">Plan starts</label>
                           <input
                             type="date"
                             className="form-control"
                             id="planRenew"
-                            name="doj"
+                            name="planRenew"
                             value={
                               props.values?.planRenew
                                 ? formatDateToInput(props.values.planRenew)
                                 : ""
                             }
                             onChange={(e) => {
-                              props.setFieldValue(
-                                "planRenew",
-                                new Date(e.target.value)
-                              );
+                              props.setFieldValue("planRenew", e.target.value);
                             }}
                           />
                         </div>

@@ -21,12 +21,8 @@ export default function MemberDetailsPage() {
             </div>
           </>
         ) : (
-          <div
-            className="container mt-4 p-4  "
-            // style={{ boxShadow: " inset 0px 1px 3px grey", height: "50vh" }}
-          >
+          <div className="container mt-4 p-4  ">
             <div className="row">
-              {/* <div className="col-md-1"></div> */}
               <div className="col-md-3 px-4">
                 <img
                   src={data?.profilePic || dp_image}
@@ -34,55 +30,16 @@ export default function MemberDetailsPage() {
                   height={"280px"}
                   width={"280px"}
                   style={{
-                    // borderRadius: "50%",
                     boxShadow: " 2px 1px 10px grey",
                   }}
                 />
               </div>
-              <div
-                className="col-md-8  "
-                // style={{ boxShadow: " 2px 1px 5px grey" }}
-              >
-                {/* <table>
-                  <tr>
-                    <thead>Name </thead>
-                    <td>{data?.name}</td>
-                  </tr>
-                  <tr>
-                    <thead>Phone Number </thead>
-                    <td>{data?.phone_number}</td>
-                  </tr>
-                  <tr>
-                    <thead>Address </thead>
-                    <td>{data?.address}</td>
-                  </tr>
-                  <tr>
-                    <thead>Date of Joining </thead>
-                    <td>{data?.doj}</td>
-                  </tr>
-
-                  <tr>
-                    <thead>Membership Plan </thead>
-                    <td>{data?.memberPlan}</td>
-                  </tr>
-
-                  <tr>
-                    <thead>Next Bill Date </thead>
-                    <td>{data?.ValidTill}</td>
-                  </tr>
-                </table> */}
-
+              <div className="col-md-8 ">
                 <table
                   style={{
                     width: "100%",
-                    // borderCollapse: "collapse",
-                    // border:"2px solid grey"
-                    // margin: "20px 0",
-                    // backgroundColor: "#f4f4f4",
                   }}
-                  // style={{}}
                 >
-                  <thead></thead>
                   <tbody>
                     <tr
                       style={{
@@ -152,6 +109,7 @@ export default function MemberDetailsPage() {
                         {formatDateToDisplay(data?.doj)}
                       </td>
                     </tr>
+                    {console.log(data, "data")}
                     <tr>
                       <td
                         style={{
@@ -160,12 +118,13 @@ export default function MemberDetailsPage() {
                           fontWeight: "bold",
                         }}
                       >
-                        Membership Plan
+                        Assigned Trainer
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {data?.memberPlan} Month
+                        {data?.assigned_trainer.name}
                       </td>
                     </tr>
+
                     <tr>
                       <td
                         style={{
@@ -177,7 +136,21 @@ export default function MemberDetailsPage() {
                         Plan Renew
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {formatDateToDisplay(data?.PlanRenew)}
+                        {formatDateToDisplay(data?.lastPayment?.planRenew)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          padding: "8px",
+                          border: "1px solid #ddd",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Membership Plan
+                      </td>
+                      <td style={{ padding: "8px", border: "1px solid #ddd" }}>
+                        {data?.lastPayment.memberPlan} Month
                       </td>
                     </tr>
                     <tr>
@@ -191,7 +164,7 @@ export default function MemberDetailsPage() {
                         Next Bill Date
                       </td>
                       <td style={{ padding: "8px", border: "1px solid #ddd" }}>
-                        {formatDateToDisplay(data?.ValidTill)}
+                        {formatDateToDisplay(data?.lastPayment.validTill)}
                       </td>
                     </tr>
                   </tbody>

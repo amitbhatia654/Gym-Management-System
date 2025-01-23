@@ -5,7 +5,7 @@ const memberSchema = new mongoose.Schema({
         type: String, require: true
     },
     address: { type: String },
-    // memberId: { type: String },
+    gender: { type: String },
     phone_number: {
         type: Number, require: true
     },
@@ -17,13 +17,13 @@ const memberSchema = new mongoose.Schema({
     doj: { type: Date },
     assigned_trainer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Trainer'  // Reference the Trainer collection
+        ref: 'trainer'
     },
     lastPayment: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Payment'
+        ref: 'payment'
     },
-    createdBy: { type: String }
+    createdBy: { type: mongoose.Schema.Types.ObjectId }
 
 }, { timestamps: true });
 

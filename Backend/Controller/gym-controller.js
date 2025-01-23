@@ -11,7 +11,7 @@ const addMember = async (req, res) => {
         let status = 'active'
         const validTill = calculateValidity(req.body.planRenew, parseInt(req.body.memberPlan))
         const currentDate = new Date()
-        if (validTill < currentDate) status = "inactive"
+        if (new Date(validTill) < currentDate) status = "inactive"
 
         const paymentData = {
             memberPlan: req.body.memberPlan,
@@ -47,20 +47,40 @@ const addMember = async (req, res) => {
 
 const updateMember = async (req, res) => {
     try {
-        let PlanRenew = req.body.PlanRenew
-        // if (req.body.type == 'renew') PlanRenew = req.body.PlanRenew
-        const ValidTill = calculateValidity(PlanRenew, parseInt(req.body.memberPlan))
-        let status = 'expire'
-
+        let planRenew = req.body.planRenew
+        const validTill = calculateValidity(planRenew, req.body.memberPlan)
+        let status = 'active'
         const currentDate = new Date()
-        if (currentDate < ValidTill) status = 'active'
 
-        const data = { ...req.body, ValidTill, status, PlanRenew }
-        const result = await Member.findByIdAndUpdate(req.body._id, data, { new: true })
+        if (new Date(validTill) < currentDate) status = 'inactive'
 
-        res.status(200).json({ message: "Member updated succesfully", result })
+        const paymentData = {
+            memberPlan: req.body.memberPlan,
+            planRenew: req.body.planRenew,
+            validTill,
+            paymentMode: req.body.paymentMode,
+        }
+
+        var memberData = { ...req.body, status }
+        if (req.body.type == 'edit') {
+            await Payment.findByIdAndUpdate({ _id: req.body.lastPayment._id }, paymentData, { new: true })
+        }
+
+        else {
+            var paymentResult = await Payment.create(paymentData)
+            memberData.lastPayment = paymentResult._id
+        }
+
+        const memberResult = await Member.findByIdAndUpdate(req.body._id, memberData, { new: true })
+            .populate({ path: 'assigned_trainer' }) // Populate assigned trainer
+            .populate({ path: 'lastPayment' })
+
+
+
+        res.status(200).json({ message: "Member updated succesfully", memberResult })
     } catch (error) {
         res.status(205).send("Member Not Updated")
+        console.log(error, 'error')
     }
 }
 
@@ -78,7 +98,13 @@ const deleteMember = async (req, res) => {
     }
 };
 
-
+// const currentDate = new Date(); // Get the current date
+// // Add validTill condition based on type
+// if (type == "active") {
+//     query.ValidTill = { $gte: currentDate }; // Fetch records with ValidTill >= current date
+// } else if (type == "expire") {
+//     query.ValidTill = { $lt: currentDate }; // Fetch records with ValidTill < current date
+// }
 
 const getAllJoinedMembers = async (req, res) => {
     try {
@@ -101,25 +127,37 @@ const getAllJoinedMembers = async (req, res) => {
             ];
         }
 
-        const currentDate = new Date(); // Get the current date
-        // Add validTill condition based on type
-        if (type == "active") {
-            query.ValidTill = { $gte: currentDate }; // Fetch records with ValidTill >= current date
-        } else if (type == "expire") {
-            query.ValidTill = { $lt: currentDate }; // Fetch records with ValidTill < current date
+        // Fetch members with populated fields
+        const members = await Member.find(query)
+            .populate({ path: 'assigned_trainer' }) // Populate assigned trainer
+            .populate({ path: 'lastPayment' }) // Populate last payment
+            .skip(skip)
+            .limit(rowSize);
+
+        // Filter members based on the `type` and `validTill`
+        const currentDate = new Date();
+        let filteredMembers = members;
+
+        if (type === "active") {
+            filteredMembers = members.filter(
+                (member) => member.lastPayment && new Date(member.lastPayment.validTill) >= currentDate
+            );
+        } else if (type === "inactive") {
+            filteredMembers = members.filter(
+                (member) => member.lastPayment && new Date(member.lastPayment.validTill) < currentDate
+            );
         }
 
-        // Fetch members with pagination
-        const response = await Member.find(query).skip(skip).limit(rowSize);
         // Count total documents for pagination
-        const totalCount = await Member.countDocuments(query);
+        const totalCount = filteredMembers.length;
 
-        res.status(200).json({ response, totalCount });
+        res.status(200).json({ response: filteredMembers, totalCount });
     } catch (error) {
         console.error("Error fetching members:", error); // Log the error for debugging
         res.status(500).send("Data not found");
     }
 };
+
 
 
 const getMembersReport = async (req, res) => {

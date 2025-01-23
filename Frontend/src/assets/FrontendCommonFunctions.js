@@ -1,5 +1,4 @@
 export const formatDateToInput = (inputDate) => {
-
     return new Date(inputDate).toISOString().split("T")[0]
 };
 
