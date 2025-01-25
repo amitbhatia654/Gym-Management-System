@@ -85,7 +85,7 @@ export default function MembersReport() {
                 <TableCell sx={{ color: "white" }}>Phone</TableCell>
                 <TableCell sx={{ color: "white" }}>Address</TableCell>
                 <TableCell sx={{ color: "white" }}>Joining Date</TableCell>
-                <TableCell sx={{ color: "white" }}>Plan Renew</TableCell>
+                <TableCell sx={{ color: "white" }}>Plan Starts</TableCell>
                 <TableCell sx={{ color: "white" }}>Membership Plan</TableCell>
                 <TableCell sx={{ color: "white" }}>Next Bill Date</TableCell>
               </TableRow>

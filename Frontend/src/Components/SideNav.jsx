@@ -29,7 +29,7 @@ export default function SideNav({ isOpen }) {
     <>
       <div
         className="d-flex flex-column justify-content-between"
-        style={{ minHeight: "86vh" }}
+        style={{ minHeight: "87.5vh" }}
       >
         <div>
           <Link
@@ -43,16 +43,14 @@ export default function SideNav({ isOpen }) {
           >
             <Box
               sx={{
-                mx: 1,
+                mx: 0.5,
                 my: 0.5,
                 p: 1,
-                boxShadow: "0px 8px 18px rgba(158, 149, 149, 0.3)",
+                boxShadow: "0px 8px 18px rgba(189, 181, 181, 0.3)",
                 borderRadius: "8px",
-                color: `${location.pathname == "/" ? "white" : "black"}`,
+                color: `${location.pathname == "/" ? "black" : "white"}`,
               }}
-              backgroundColor={`${
-                location.pathname == "/" ? "#47478C" : "#eaeaf7"
-              }`}
+              backgroundColor={`${location.pathname == "/" ? "#eaeaf7" : ""}`}
             >
               <WidgetsIcon />
               <Box
@@ -80,22 +78,19 @@ export default function SideNav({ isOpen }) {
                 >
                   <Box
                     sx={{
-                      mx: 1,
+                      mx: 0.5,
                       my: 0.5,
                       p: 1,
-                      boxShadow: "0px 8px 18px rgba(0, 0, 0, 0.3)",
+                      boxShadow: "0px 8px 18px rgba(189, 181, 181, 0.3)",
                       borderRadius: "8px",
                       // color: "black",
                       color: `${
                         location.pathname.slice(1) == data.path
-                          ? "white"
-                          : "balck"
+                          ? "black"
+                          : "white"
                       }`,
-                      // backgroundColor: "#47478C",
                       backgroundColor: `${
-                        location.pathname.slice(1) == data.path
-                          ? "#47478C"
-                          : "#eaeaf7"
+                        location.pathname.slice(1) == data.path ? "#eaeaf7" : ""
                       }`,
                     }}
                     index={index}
@@ -128,6 +123,7 @@ export default function SideNav({ isOpen }) {
               my: 0.5,
               p: 1,
               boxShadow: "0px 8px 18px rgba(158, 149, 149, 0.3)",
+              color:"white"
             }}
           >
             <LogoutIcon />

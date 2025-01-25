@@ -41,10 +41,13 @@ export default function Index() {
 
   return (
     <>
-      <div className="d-flex">
+      <div
+        className="d-flex"
+        style={{ backgroundColor: "#47478C", color: "white" }}
+      >
         <div
           style={{
-            color: "#47478C",
+            color: "white",
             fontSize: "28px",
             fontFamily: "serif",
             fontWeight: "bold",
@@ -57,7 +60,7 @@ export default function Index() {
         </div>
 
         <div className="d-flex justify-content-end w-100">
-          {/* <div className=" my-1 ">
+          <div className=" my-1 ">
             <IconButton
               size="large"
               aria-label="show 4 new mails"
@@ -77,18 +80,18 @@ export default function Index() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-          </div> */}
+          </div>
 
           <div className="">
-            <Tooltip title="My Profile" placement="bottom-end">
+            <Tooltip title="Gym Profile" placement="bottom-end">
               <IconButton onClick={handleOpenUserMenu}>
-                {/* <img
+                <img
                   alt="User Image"
                   src={userData.profilePic}
                   className=""
                   style={{ height: "40px", width: "40px", borderRadius: "50%" }}
-                /> */}
-                <Avatar></Avatar>
+                />
+                {/* <Avatar></Avatar> */}
               </IconButton>
             </Tooltip>
             <Menu
@@ -110,24 +113,13 @@ export default function Index() {
                 <Typography
                   textAlign="center"
                   onClick={() => {
-                    navigate("/profile");
+                    navigate("/gym-profile");
                   }}
                 >
                   <AccountBoxIcon className="mx-2" />
                   Profile
                 </Typography>
               </MenuItem>
-
-              {/* <MenuItem onClick={handleCloseUserMenu}>
-                <Typography
-                  textAlign="center"
-                  onClick={() => {
-                    navigate("/settings");
-                  }}
-                >
-                  <SettingsIcon className="mx-2" /> Settings
-                </Typography>
-              </MenuItem> */}
 
               <MenuItem>
                 <Typography
@@ -151,16 +143,18 @@ export default function Index() {
         <div
           className={!isOpen ? "sidenav-full" : "sidenav-small"}
           style={{
-            borderTop: "2px solid white",
-            borderRight: "2px solid grey",
+            borderTop: "1px solid white",
+            // borderRight: "2px solid grey",
+            backgroundColor: "#47478C",
           }}
         >
           <div className="d-flex justify-content-end">
             <button
               onClick={() => setIsOpen(!isOpen)}
               style={{
-                color: "blue",
-                border: "1px solid white",
+                color: "white",
+                backgroundColor: "#47478C",
+                // border: "1px solid white",
                 fontSize: "14x",
               }}
             >
@@ -184,8 +178,8 @@ export default function Index() {
           <div
             className="scrollable-container "
             style={{
-              minHeight: "91vh",
-              maxHeight: "91vh",
+              minHeight: "91.7vh",
+              maxHeight: "91.7vh",
               paddingLeft: "14px",
               paddingRight: "14px",
             }}

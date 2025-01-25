@@ -54,11 +54,13 @@ const LoginRegister = () => {
           );
 
     if (res.status == 200) {
+      console.log(res.data, "data ");
       if (type == "login") {
         const user = {
           id: res.data?.user?._id,
           name: res.data?.user?.name,
           isAdmin: res.data?.user?.isAdmin,
+          profilePic: res?.data?.user?.profilePic,
         };
         localStorage.setItem("token", res.data?.token);
         localStorage.setItem("user", JSON.stringify(user));

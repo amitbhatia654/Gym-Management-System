@@ -22,7 +22,7 @@ export default function InactiveMembers() {
   const [editMember, setEditMember] = useState({});
   const [search, setSearch] = useState("");
   const [rowSize, setRowSize] = useState(8);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [allMembers, setAllMembers] = useState([]);
   const totalPages = Math.ceil(totalCount / rowSize);
