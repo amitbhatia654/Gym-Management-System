@@ -16,6 +16,7 @@ router.route('/trainer').put(AuthMiddleWare, gymController.updateTrainer)
 router.route('/trainer').delete(AuthMiddleWare, gymController.deleteTrainer)
 
 router.route('/trainers-list').get(AuthMiddleWare, gymController.getAllTrainersList)
+router.route('/getMemberList/:id').get(AuthMiddleWare, gymController.getAllMembersList)
 
 
 

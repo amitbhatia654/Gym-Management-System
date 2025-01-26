@@ -327,8 +327,22 @@ const getAllTrainersList = async (req, res) => {
     }
 };
 
+// to fetch all members list under the trainer
+const getAllMembersList = async (req, res) => {
+    try {
+
+        let query = { assigned_trainer: req.query.trainerId };
+        const response = await Member.find(query)
+
+        res.status(200).json({ response });
+    } catch (error) {
+        console.error("Error fetching trainers list:", error); // Log the error for debugging
+        res.status(500).send("Data not found");
+    }
+};
+
 
 module.exports = {
     addMember, getAllJoinedMembers, updateMember, deleteMember, getMembersReport, addTrainer,
-    getAllTrainers, updateTrainer, deleteTrainer, getAllTrainersList
+    getAllTrainers, updateTrainer, deleteTrainer, getAllTrainersList, getAllMembersList
 }

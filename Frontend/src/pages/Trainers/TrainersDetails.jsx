@@ -1,12 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ContainerPage from "../HelperPages/ContainerPage";
 import { formatDateToDisplay } from "../../assets/FrontendCommonFunctions";
+import axiosInstance from "../../ApiManager";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 const dp_image = "/images/user.jpg";
+import noResult from "../../../images/no-results3.jpeg";
 
 export default function TrainersDetailsPage() {
   const location = useLocation();
+  const [allemployee, setAllEmployee] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { data } = location.state;
+
+  console.log(data, "data is ");
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await axiosInstance.get(`/api/gym/getMemberList/:${data._id}`, {
+      params: { trainerId: data._id },
+    });
+    if (res.status == 200) {
+      setAllEmployee(res.data.response);
+      // setTotalCount(res.data.totalCount);
+    } else {
+      setAllEmployee([]);
+      // setTotalCount(0);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -187,6 +220,114 @@ export default function TrainersDetailsPage() {
                 </table>
               </div>
             </div>
+            <h4 className="text-center text-secondary mt-5">
+              Members Allocated to this Trainer
+            </h4>
+
+            <TableContainer
+              className="scrollable-container mt-4"
+              style={{ maxHeight: "62vh" }}
+            >
+              <Table aria-label="simple table">
+                <TableHead
+                  sx={{
+                    backgroundColor: "#47478c",
+                    color: "wheat",
+                    position: "sticky",
+                    top: 0,
+                  }}
+                >
+                  <TableRow className="tableStyle">
+                    <TableCell sx={{ color: "white" }}>S.No.</TableCell>
+                    <TableCell sx={{ color: "white" }}>Employee Name</TableCell>
+                    <TableCell sx={{ color: "white" }}>gender</TableCell>
+                    <TableCell sx={{ color: "white" }}>Phone</TableCell>
+                    <TableCell sx={{ color: "white" }}>address</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className="tableBodyStyle">
+                  {loading ? (
+                    <TableCell colSpan={8}>
+                      {" "}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "300px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <div className="loader"></div>
+                      </div>
+                    </TableCell>
+                  ) : allemployee.length > 0 ? (
+                    allemployee?.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell
+                          style={{
+                            boxShadow: "0px 2px 4px rgba(0 ,0 ,0 ,0.2)",
+                          }}
+                        >
+                          {/* {(currentPage - 1) * rowSize + index + 1} */}
+                          {index + 1}
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            boxShadow: "0px 2px 4px rgba(0 ,0 ,0 ,0.2)",
+                          }}
+                        >
+                          {row?.name}
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            boxShadow: "0px 2px 4px rgba(0 ,0 ,0 ,0.2)",
+                          }}
+                        >
+                          {row?.gender}
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            boxShadow: "0px 2px 4px rgba(0 ,0 ,0 ,0.2)",
+                          }}
+                        >
+                          {row?.phone_number}
+                        </TableCell>
+
+                        <TableCell
+                          style={{
+                            boxShadow: "0px 2px 4px rgba(0 ,0 ,0 ,0.2)",
+                          }}
+                        >
+                          {row?.address}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={8}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "300px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <img
+                            src={noResult}
+                            alt="No Result Image"
+                            height="250px"
+                            width="300px"
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         )}
       </ContainerPage>
