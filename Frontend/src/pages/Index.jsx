@@ -43,7 +43,7 @@ export default function Index() {
     <>
       <div
         className="d-flex"
-        style={{ backgroundColor: "#47478C", color: "white" }}
+        style={{ backgroundColor: "#1e1e75", color: "white" }}
       >
         <div
           style={{
@@ -52,8 +52,8 @@ export default function Index() {
             fontFamily: "serif",
             fontWeight: "bold",
             margin: "7px",
-            marginLeft: "20px",
-            width: "500px",
+            marginLeft: "15px",
+            width: "600px",
           }}
         >
           {userData?.name?.toUpperCase() ?? "user"}
@@ -145,7 +145,7 @@ export default function Index() {
           style={{
             borderTop: "1px solid white",
             // borderRight: "2px solid grey",
-            backgroundColor: "#47478C",
+            backgroundColor: "#1e1e75",
           }}
         >
           <div className="d-flex justify-content-end">
