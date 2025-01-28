@@ -3,6 +3,7 @@ const Member = require('../Models/MembersModel')
 const { calculateValidity } = require("../utils/CommonFunctions");
 const Trainer = require("../Models/TrainerModel");
 const Payment = require("../Models/PaymentsModel");
+const MemberPlan = require("../Models/MembershipModel");
 
 
 const addMember = async (req, res) => {
@@ -342,7 +343,49 @@ const getAllMembersList = async (req, res) => {
 };
 
 
+const addMembershipPlans = async (req, res) => {
+    try {
+        const data = { ...req.body, createdBy: req.loginUser._id }
+        const result = await MemberPlan.create(data)
+        res.status(200).json({ message: "New Plan Added Succesfully", result })
+    } catch (error) {
+        res.status(400).send("Some Error Occured")
+        console.log('error in adding trainer', error)
+    }
+}
+
+
+const getAllMemberPlans = async (req, res) => {
+    try {
+        const createdBy = req.loginUser._id;
+        // Base query
+        let query = { createdBy };
+        const response = await MemberPlan.find(query);
+        res.status(200).json({ response });
+    } catch (error) {
+        console.error("Error fetching membership plans:", error); // Log the error for debugging
+        res.status(500).send(" something Wrong ! Plan Not Deleted ");
+    }
+};
+
+const deleteMemberPlan = async (req, res) => {
+    try {
+        console.log(req.body, 'body is ')
+        const deletedTrainer = await MemberPlan.findOneAndDelete({ _id: req.body.planId });
+        if (!deletedTrainer) {
+            return res.status(404).send({ message: 'Plan not deleted' });
+        }
+        res.status(200).send({ message: 'Plan deleted successfully', data: deletedTrainer });
+
+    } catch (error) {
+        console.error('Error deleting Member:', error);
+        res.status(500).send({ message: 'Failed to delete Memeber' });
+    }
+};
+
+
 module.exports = {
     addMember, getAllJoinedMembers, updateMember, deleteMember, getMembersReport, addTrainer,
-    getAllTrainers, updateTrainer, deleteTrainer, getAllTrainersList, getAllMembersList
+    getAllTrainers, updateTrainer, deleteTrainer, getAllTrainersList, getAllMembersList, addMembershipPlans,
+    getAllMemberPlans, deleteMemberPlan
 }

@@ -189,7 +189,7 @@ export default function InactiveMembers() {
                         className="member-image"
                       />
 
-                      <div className="fw-bold mt-2 " style={{ color: "blue" }}>
+                      <div className="fw-bold mt-2 " style={{ color: "" }}>
                         {" "}
                         {member.name}
                       </div>
@@ -210,7 +210,7 @@ export default function InactiveMembers() {
                           aria-expanded="false"
                         >
                           <h6>
-                            <MoreVertIcon sx={{ fontSize: "19px" }} />
+                            <MoreVertIcon sx={{ fontSize: "19px",color:'white' }} />
                           </h6>
                         </button>
                         <ul className="dropdown-menu">

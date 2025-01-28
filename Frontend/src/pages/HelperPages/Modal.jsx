@@ -1,9 +1,15 @@
-export default function Modal({ setShowModal, title, children, otherFunc }) {
+export default function Modal({
+  setShowModal,
+  title,
+  children,
+  otherFunc,
+  size = "modal-lg",
+}) {
   return (
     <>
       <div className="modal show d-block " tabIndex="-1" role="dialog">
         <div
-          className="modal-dialog modal-lg modal-dialog-centered"
+          className={`modal-dialog ${size} modal-dialog-centered`}
           role="document"
         >
           {/* modal-dialog-centered" */}

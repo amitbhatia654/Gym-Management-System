@@ -66,7 +66,6 @@ export default function JoinedMembers() {
       data.profilePic = base64;
     }
 
-
     const res = editMember._id
       ? await axiosInstance.put(`/api/gym/member`, data)
       : await axiosInstance.post(`/api/gym/member`, data);
@@ -241,7 +240,7 @@ export default function JoinedMembers() {
                         className="member-image"
                       />
 
-                      <div className="fw-bold mt-2" style={{ color: "blue" }}>
+                      <div className="fw-bold mt-2" style={{ color: "" }}>
                         {" "}
                         {member.name}
                       </div>
@@ -254,7 +253,7 @@ export default function JoinedMembers() {
                         {formatDateToDisplay(member?.lastPayment.validTill) ??
                           "--"}{" "}
                       </span>
-                      <span className="dropdown">
+                      <span className="dropdown ">
                         <button
                           className="btn "
                           type="button"
@@ -262,7 +261,9 @@ export default function JoinedMembers() {
                           aria-expanded="false"
                         >
                           <h6>
-                            <MoreVertIcon sx={{ fontSize: "19px" }} />
+                            <MoreVertIcon
+                              sx={{ fontSize: "19px", color: "white" }}
+                            />
                           </h6>
                         </button>
                         <ul className="dropdown-menu">

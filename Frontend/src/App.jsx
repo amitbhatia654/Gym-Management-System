@@ -90,7 +90,7 @@ function App() {
 
           <Route
             path="membership-plans"
-            element={<MemberShipPlans></MemberShipPlans>}
+            element={<h5>Membership plans</h5>}
           ></Route>
 
           <Route path="gym-profile" element={<MyProfile></MyProfile>}></Route>
