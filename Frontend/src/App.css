@@ -181,6 +181,24 @@ body {
 
 }
 
+.box2:hover {
+    background-color: #346f31;
+    color: white;
+
+}
+
+.box3:hover {
+    background-color: #b5a405;
+    color: white;
+
+}
+
+.box4:hover {
+    background-color: #f33434;
+    color: white;
+
+}
+
 .box1 {
     border-top: 10px solid;
     border-color: #2a2a70;

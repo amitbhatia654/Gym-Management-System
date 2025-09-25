@@ -100,7 +100,7 @@ export default function Main_dashBoard() {
               ]}
               width={400}
               height={200}
-              colors={['blue','red']}
+              colors={["blue", "red"]}
             />
           </div>
         </div>
