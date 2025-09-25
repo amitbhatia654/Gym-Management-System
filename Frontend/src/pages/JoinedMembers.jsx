@@ -23,6 +23,9 @@ import {
 import ConfirmModal from "./HelperPages/ConfirmModal";
 import moment from "moment";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { editMemberNew } from "../assets/ApiFunctions";
+
 export default function JoinedMembers() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setloading] = useState(false);
@@ -35,6 +38,7 @@ export default function JoinedMembers() {
   const [allMembers, setAllMembers] = useState([]);
   const [allTrainers, setAllTrainers] = useState([]);
   const totalPages = Math.ceil(totalCount / rowSize);
+  const queryClient = useQueryClient();
 
   const [confirmModalData, setConfirmModalData] = useState({
     open: false,
@@ -50,9 +54,65 @@ export default function JoinedMembers() {
     });
   }
 
+  // const handleSubmit = async (values) => {
+  //   // return console.log(values, "values");
+  //   setSubmitLoading(true);
+
+  //   var data = {
+  //     ...values,
+  //     planRenew: moment(values.planRenew).format(),
+  //     doj: moment(values.doj).format(),
+  //   };
+
+  //   if (editMember._id) data.type = "edit";
+  //   if (values?.profilePic?.name) {
+  //     const base64 = await convertFileToBase64(values?.profilePic);
+  //     data.profilePic = base64;
+  //   }
+
+  //   const res = editMember._id
+  //     ? await axiosInstance.put(`/api/gym/member`, data)
+  //     : await axiosInstance.post(`/api/gym/member`, data);
+
+  //   setSubmitLoading(false);
+  //   if (res.status == 200) {
+  //     if (editMember._id) {
+  //       if (res.data.memberResult.status == "active") {
+  //         const updatedMember = allMembers.map((folder) => {
+  //           if (folder._id == values._id) {
+  //             return res.data.memberResult;
+  //           }
+  //           return folder;
+  //         });
+  //         setAllMembers(updatedMember);
+  //       } else {
+  //         const updatedMembers = allMembers.filter(
+  //           (member) => member._id !== res.data.memberResult._id
+  //         );
+  //         setAllMembers(updatedMembers);
+  //       }
+  //     } else {
+  //       if (
+  //         allMembers.length < rowSize &&
+  //         res.data.memberResult.status == "active"
+  //       )
+  //         allMembers.push(res.data.memberResult);
+  //       else {
+  //         const updatedMembers = allMembers.filter(
+  //           (member) => member._id !== res.data.memberResult._id
+  //         );
+  //         setAllMembers(updatedMembers);
+  //       }
+  //     }
+  //     toast.success(res.data.message);
+  //     setEditMember({});
+  //     setShowModal(false);
+  //   }
+  // };
+
   const handleSubmit = async (values) => {
     // return console.log(values, "values");
-    setSubmitLoading(true);
+    // setSubmitLoading(true);
 
     var data = {
       ...values,
@@ -106,6 +166,31 @@ export default function JoinedMembers() {
     }
   };
 
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deletePlan(id),
+    onSuccess: (data, id) => {
+      toast.success(data.data.message);
+      queryClient.setQueryData(["memberPlan"], (currentData) => {
+        return currentData.filter((plan) => plan._id != id);
+      });
+    },
+    onError: (data, id) => {
+      console.log(data, "the error");
+    },
+  });
+
+  const editMutation = useMutation({
+    mutationFn: (values) => editMemberNew(values),
+    onSuccess: (values) => {
+      setShowModal(false);
+      setEditMember(null);
+      toast.success(values.message);
+    },
+    onError: (data, id) => {
+      console.log(data, "the error");
+    },
+  });
+
   const deleteMember = async (memberId) => {
     // console.log(memberId);
     const userResponse = await showConfirmationModal();
@@ -124,12 +209,13 @@ export default function JoinedMembers() {
   };
 
   const fetchData = async () => {
-    setloading(true);
+    // setloading(true);
     const type = "active";
 
     const res = await axiosInstance.get("/api/gym/member", {
       params: { search, rowSize, currentPage, type },
     });
+    return res.data;
     console.log(res.data.response, "api response is");
     if (res.status == 200) {
       setAllMembers(res.data.response);
@@ -140,6 +226,19 @@ export default function JoinedMembers() {
     }
     setloading(false);
   };
+
+  // search, rowSize, currentPage;
+
+  const { data } = useQuery({
+    queryKey: ["activeMember"],
+    queryFn: fetchData,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setTotalCount(data.count || 0);
+    }
+  }, [data]);
 
   const fetchTrainersList = async () => {
     const res = await axiosInstance.get("/api/gym/trainers-list", {
@@ -155,10 +254,6 @@ export default function JoinedMembers() {
   useEffect(() => {
     fetchTrainersList();
   }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [search, rowSize, currentPage]);
 
   const showConfirmationModal = () => {
     return new Promise((resolve) => {
@@ -222,8 +317,8 @@ export default function JoinedMembers() {
                   <div className="loader"></div>
                 </div>
               </>
-            ) : allMembers.length > 0 ? (
-              allMembers.map((member, id) => {
+            ) : data?.response?.length > 0 ? (
+              data.response.map((member, id) => {
                 return (
                   <div className=" member-box text-center " key={id}>
                     <div
@@ -318,7 +413,7 @@ export default function JoinedMembers() {
           setShowModal={setShowModal}
           //   otherFunc={setEditMember}
           title={`${editMember._id ? "Edit" : "Add"} Member `}
-          handleSubmit={handleSubmit}
+          // handleSubmit={handleSubmit}
         >
           <Formik
             initialValues={
@@ -346,7 +441,23 @@ export default function JoinedMembers() {
             }
             // validationSchema={addMember}
             enableReinitialize={true}
-            onSubmit={(values) => handleSubmit(values)}
+            onSubmit={async (values) => {
+              var data = {
+                ...values,
+                planRenew: moment(values.planRenew).format(),
+                doj: moment(values.doj).format(),
+              };
+
+              if (editMember._id) data.type = "edit";
+              if (values?.profilePic?.name) {
+                const base64 = await convertFileToBase64(values?.profilePic);
+                data.profilePic = base64;
+              }
+              if (editMember._id) editMutation.mutate(data);
+              else {
+                // AddFunction
+              }
+            }}
           >
             {(props) => (
               <Form onSubmit={props.handleSubmit}>
